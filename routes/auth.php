@@ -12,8 +12,8 @@ Route::post('/{guard}', [AuthController::class, 'login'])->name('submit');
 
 // Registration Routes
 Route::group(['prefix' => 'register', 'as' => 'register.'], function () {
-Route::get('/seller', [AuthController::class, 'showRegistrationForm'])->name('seller.form');
-Route::post('/seller', [AuthController::class, 'register'])->name('seller.submit');
+Route::get('/', [AuthController::class, 'showRegistrationForm'])->name('seller.form');
+Route::post('/{guard}', [AuthController::class, 'register'])->name('seller.submit');
 });
 
 // Logout Route

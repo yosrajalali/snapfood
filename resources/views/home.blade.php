@@ -32,7 +32,7 @@
 <body class="main-layout">
 <!-- loader  -->
 <div class="loader_bg">
-    <div class="loader"><img src="images/loading.gif" alt="" /></div>
+    <div class="loader"><img src="{{asset('images/loading.gif')}}" alt="" /></div>
 </div>
 
 <div class="wrapper">
@@ -49,19 +49,19 @@
             <ul class="list-unstyled components">
 
                 <li class="active">
-                    <a href="index.html">خانه</a>
+                    <a href="#">خانه</a>
                 </li>
                 <li>
-                    <a href="about.html">درباره</a>
+                    <a href="#">درباره</a>
                 </li>
                 <li>
-                    <a href="recipe.html">دستور پخت</a>
+                    <a href="#">دستور پخت</a>
                 </li>
                 <li>
-                    <a href="blog.html">بلاگ</a>
+                    <a href="#">بلاگ</a>
                 </li>
                 <li>
-                    <a href="contact.html"> تماس با ما</a>
+                    <a href="#"> تماس با ما</a>
                 </li>
             </ul>
 
@@ -75,20 +75,30 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="full">
-                            <a class="logo" href="index.html"><img src="images/logo.png" alt="#" /></a>
+                            <a class="logo" href="{{route('home')}}"><img src="{{asset('images/logo.png')}}" alt="#" /></a>
                         </div>
                     </div>
                     <div class="col-md-9">
                         <div class="full">
                             <div class="right_header_info">
                                 <ul>
-                                    <li class="button_user"><a class="button active" href="{{ route('auth.login.form') }}">ورود</a>
-                                        <a class="button" href="{{route('auth.register.seller.form')}}">ثبت نام فروشندگان</a>
-                                    </li>
-                                    <li><img style="margin-right: 15px;" src="images/search_icon.png" alt="#"></li>
+                                    @auth
+                                        <li class="button_user">
+                                            <form id="logout-form" action="" method="POST">
+                                                @csrf
+                                                <button class="btn" type="submit">خروج</button>
+                                            </form>
+                                        </li>
+                                    @else
+                                        <li class="button_user">
+                                            <a class="button active" href="{{ route('auth.login.form') }}">ورود</a>
+                                            <a class="button" href="{{ route('auth.register.seller.form') }}">ثبت نام فروشندگان</a>
+                                        </li>
+                                    @endauth
+                                    <li><img style="margin-right: 15px;" src="{{asset('images/search_icon.png')}}" alt="#"></li>
                                     <li>
                                         <button type="button" id="sidebarCollapse">
-                                            <img src="images/menu_icon.png" alt="#">
+                                            <img src="{{asset('images/menu_icon.png')}}" alt="#">
                                         </button>
                                     </li>
                                 </ul>
@@ -98,6 +108,7 @@
                 </div>
             </div>
         </header>
+
         <!-- end header -->
         <!-- start slider section -->
         <div class="slider_section">
