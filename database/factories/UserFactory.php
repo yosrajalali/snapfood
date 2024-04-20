@@ -24,12 +24,24 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => Hash::make('password'),
+            'phone_number' => $this->faker->unique()->numerify('09#########'),
+            'role' => $this->faker->randomElement(['buyer', 'seller']),
         ];
+    }
+
+    /**
+     * Indicate that the model's role should be admin.
+     */
+    public function admin(): Factory|UserFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => 'admin',
+            ];
+        });
     }
 
     /**

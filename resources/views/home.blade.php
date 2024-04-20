@@ -14,13 +14,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- bootstrap css -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('css/home/bootstrap.min.css')}}">
     <!-- owl css -->
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="{{asset('css/home/owl.carousel.min.css')}}">
     <!-- style css -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ asset('css/home/style.css') }}">
     <!-- responsive-->
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="{{asset('css/home/responsive.css')}}">
     <!-- awesome fontfamily -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!--[if lt IE 9]>
@@ -82,10 +82,9 @@
                         <div class="full">
                             <div class="right_header_info">
                                 <ul>
-                                    <!-- <li class="dinone">Contact Us : <img style="margin-right: 15px;margin-left: 15px;" src="images/phone_icon.png" alt="#"><a href="#">987-654-3210</a></li>
-                                    <li class="dinone"><img style="margin-right: 15px;" src="images/mail_icon.png" alt="#"><a href="#">demo@gmail.com</a></li>
-                                    <li class="dinone"><img style="margin-right: 15px;height: 21px;position: relative;top: -2px;" src="images/location_icon.png" alt="#"><a href="#">104 New york , USA</a></li> -->
-                                    <li class="button_user"><a class="button active" href="#">ورود</a><a class="button" href="#">ثبت نام</a></li>
+                                    <li class="button_user"><a class="button active" href="{{ route('auth.login.form') }}">ورود</a>
+                                        <a class="button" href="{{route('auth.register.seller.form')}}">ثبت نام فروشندگان</a>
+                                    </li>
                                     <li><img style="margin-right: 15px;" src="images/search_icon.png" alt="#"></li>
                                     <li>
                                         <button type="button" id="sidebarCollapse">

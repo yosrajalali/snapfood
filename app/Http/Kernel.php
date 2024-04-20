@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Custom\Admin;
+use App\Http\Middleware\Custom\Buyer;
+use App\Http\Middleware\Custom\Seller;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -28,6 +31,13 @@ class Kernel extends HttpKernel
      *
      * @var array<string, array<int, class-string|string>>
      */
+
+    protected $routeMiddleware = [
+        'admin' => Admin::class,
+        'seller' => Seller::class,
+        'buyer' => Buyer::class,
+    ];
+
     protected $middlewareGroups = [
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
