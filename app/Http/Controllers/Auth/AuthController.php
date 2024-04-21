@@ -46,22 +46,6 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
-    {
-        $guard = Auth::guard(); // Get the default guard
-
-        if ($guard->check()) {
-            $guard->logout();
-
-            // Invalidate the session to protect against session fixation attacks
-            $request->session()->invalidate();
-
-            // Regenerate the session token
-            $request->session()->regenerateToken();
-        }
-
-        return redirect()->route('auth.login.form');
-    }
     public function login(LoginRequest $request): JsonResponse|RedirectResponse
     {
         $email = $request->email;
@@ -81,7 +65,24 @@ class AuthController extends Controller
             }
         }
 
-        return back()->withErrors(['login' => 'The provided credentials do not match our records.']);
+        return back()->withErrors(['error' => 'The provided credentials do not match our records.']);
+    }
+
+    public function logout(Request $request)
+    {
+        $guard = Auth::guard(); // Get the default guard
+
+        if ($guard->check()) {
+            $guard->logout();
+
+            // Invalidate the session to protect against session fixation attacks
+            $request->session()->invalidate();
+
+            // Regenerate the session token
+            $request->session()->regenerateToken();
+        }
+
+        return redirect()->route('auth.login.form');
     }
 
 }

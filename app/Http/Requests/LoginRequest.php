@@ -41,4 +41,11 @@ class LoginRequest extends FormRequest
         $user = \App\Models\User::where('email', $email)->first();
         return $user && $user->role !== 'buyer';  // Password is not required if the role is 'buyer'
     }
+
+    public function messages(): array
+    {
+        return [
+            'email.exists' => 'The provided credentials are incorrect.',
+        ];
+    }
 }

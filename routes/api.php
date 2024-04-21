@@ -19,6 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('auth/register/{guard}', [AuthController::class,'register']);
-Route::post('auth/login', [AuthController::class,'login'])->name('login');
+Route::prefix('auth')->name('buyer.')->group(function () {
+    Route::post('register/{guard}', [AuthController::class, 'register'])->name('register');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+});
+
+//protected routes
+Route::middleware(['auth:sanctum'])->group(function () {
+
+});
 

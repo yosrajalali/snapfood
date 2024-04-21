@@ -81,29 +81,39 @@
                     <div class="col-md-9">
                         <div class="full">
                             <div class="right_header_info">
-                                <ul>
+                                <ul class="list-inline">
                                     @auth
-                                        <li class="button_user">
-                                            <form id="logout-form" action="{{route('auth.logout')}}" method="POST">
+                                        <li class="list-inline-item">
+                                            <form id="logout-form" action="{{route('auth.logout')}}" method="POST" class="d-inline">
                                                 @csrf
-                                                <button class="btn" type="submit">خروج</button>
+                                                <button class="btn btn-outline-success custom-button" type="submit">خروج</button>
                                             </form>
                                         </li>
+                                        <li class="list-inline-item">
+                                            @if (auth()->user()->role === 'admin')
+                                                <a class="btn btn-outline-success" href="">پنل ادمین</a>
+                                            @elseif (auth()->user()->role === 'seller')
+                                                <a class="btn btn-outline-success" href="">داشبورد فروشنده</a>
+                                            @endif
+                                        </li>
                                     @else
-                                        <li class="button_user">
-                                            <a class="button active" href="{{ route('auth.login.form') }}">ورود</a>
-                                            <a class="button" href="{{ route('auth.register.form') }}">ثبت نام فروشندگان</a>
+                                        <li class="list-inline-item">
+                                            <a class="btn btn-outline-success active" href="{{ route('auth.login.form') }}">ورود</a>
+                                            <a class="btn btn-outline-success" href="{{ route('auth.register.form') }}">ثبت نام فروشندگان</a>
                                         </li>
                                     @endauth
-                                    <li><img style="margin-right: 15px;" src="{{asset('images/search_icon.png')}}" alt="#"></li>
-                                    <li>
-                                        <button type="button" id="sidebarCollapse">
-                                            <img src="{{asset('images/menu_icon.png')}}" alt="#">
+{{--                                    <li class="list-inline-item">--}}
+{{--                                        <img src="{{asset('images/search_icon.png')}}" alt="#" style="height: 20px;">--}}
+{{--                                    </li>--}}
+                                    <li class="list-inline-item">
+                                        <button type="button" class="btn btn-primary" id="sidebarCollapse">
+                                            <img src="{{asset('images/menu_icon.png')}}" alt="#" style="height: 20px;">
                                         </button>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
