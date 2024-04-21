@@ -46,11 +46,11 @@ return [
         ],
         'seller' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'sellers',
         ],
         'buyer' => [
-            'driver' => 'token',
-            'provider' => 'users',
+            'driver' => 'sanctum',
+            'provider' => 'buyers',
         ],
     ],
 
@@ -75,6 +75,14 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'sellers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Seller::class,
+        ],
+        'buyers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Buyer::class,
         ],
 
         // 'users' => [

@@ -1,21 +1,19 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
-// Login Routes
-Route::group(['prefix' => 'login', 'as' => 'login.'], function () {
-Route::get('/', [AuthController::class, 'showLoginForm'])->name('form');
-Route::post('/', [AuthController::class, 'login'])->name('submit');
-});
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('login', [AdminAuthController::class, 'showLogin'])->name('login.show');
+    Route::post('login', [AdminAuthController::class, 'login'])->name('login');
+    Route::get('register', [AdminAuthController::class, 'showRegister'])->name('register.show');
+    Route::post('register', [AdminAuthController::class, 'register'])->name('register');
 
-// Registration Routes
-Route::group(['prefix' => 'register', 'as' => 'register.'], function () {
-Route::get('/', [AuthController::class, 'showRegistrationForm'])->name('form');
-Route::post('/{guard}', [AuthController::class, 'register'])->name('submit');
-});
+    Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
+    // region authenticated
+    Route::middleware('auth:admin')->group(function () {
 
-// Logout Route
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    });
+    // endregion
 });

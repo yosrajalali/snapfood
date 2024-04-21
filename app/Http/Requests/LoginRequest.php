@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class LoginRequest extends FormRequest
 {
@@ -21,31 +22,28 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'email' => ['required', 'email', 'exists:users,email'],
+        return [
+            'email' => [
+                'required',
+                'email',
+                function ($attribute, $value, $fail) {
+                    if (!DB::table('users')->where('email', $value)->exists() &&
+                        !DB::table('sellers')->where('email', $value)->exists()) {
+                        return $fail('اطلاعات ورود اشتباه است.');
+                    }
+                }
+            ],
+            'password' => ['required', 'string', 'min:8']
         ];
-
-        // Determine if a password should be required based on the user type associated with the email
-        if ($this->needsPassword($this->email)) {
-            $rules['password'] = ['required', 'string', 'min:8'];
-        } else {
-            $rules['password'] = ['nullable', 'string', 'min:8'];
-        }
-
-        return $rules;
-    }
-
-    private function needsPassword($email): bool
-    {
-        // Example logic, assuming you have a User model and users have a 'role' attribute
-        $user = \App\Models\User::where('email', $email)->first();
-        return $user && $user->role !== 'buyer';  // Password is not required if the role is 'buyer'
     }
 
     public function messages(): array
     {
         return [
-            'email.exists' => 'The provided credentials are incorrect.',
+            'email.required' => 'وارد کردن ایمیل الزامی است.',
+            'email.email' => 'فرمت ایمیل وارد شده معتبر نیست.',
+            'password.required' => 'وارد کردن رمز عبور الزامی است.',
+            'password.min' => 'رمز عبور باید حداقل 8 کاراکتر باشد.'
         ];
     }
 }
