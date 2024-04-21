@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'phone_number' => '000-000-0000',
-            'password' => bcrypt('admin')
+            'password' => bcrypt('adminpassword')
         ]);
 
         // Create multiple buyer and seller users

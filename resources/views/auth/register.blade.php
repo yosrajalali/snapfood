@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
 <div class="w-full max-w-md">
-    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST" action="{{ route('auth.register.seller.submit', ['guard' => 'seller']) }}">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST" action="{{ route('auth.register.submit', ['guard' => 'seller']) }}">
         @csrf
         <!-- Name -->
         <div class="mb-4">

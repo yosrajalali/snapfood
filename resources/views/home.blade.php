@@ -84,7 +84,7 @@
                                 <ul>
                                     @auth
                                         <li class="button_user">
-                                            <form id="logout-form" action="" method="POST">
+                                            <form id="logout-form" action="{{route('auth.logout')}}" method="POST">
                                                 @csrf
                                                 <button class="btn" type="submit">خروج</button>
                                             </form>
@@ -92,7 +92,7 @@
                                     @else
                                         <li class="button_user">
                                             <a class="button active" href="{{ route('auth.login.form') }}">ورود</a>
-                                            <a class="button" href="{{ route('auth.register.seller.form') }}">ثبت نام فروشندگان</a>
+                                            <a class="button" href="{{ route('auth.register.form') }}">ثبت نام فروشندگان</a>
                                         </li>
                                     @endauth
                                     <li><img style="margin-right: 15px;" src="{{asset('images/search_icon.png')}}" alt="#"></li>
