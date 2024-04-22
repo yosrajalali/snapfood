@@ -50,7 +50,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse|RedirectResponse
     {
         $user = User::where('email', $request->email)->first();
-        $guard = 'web'; // Assuming 'web' is the default guard for Users
+        $guard = 'admin'; // Assuming 'web' is the default guard for Users
 
         // If no user found, check Sellers
         if (!$user) {
@@ -71,19 +71,13 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $guard = Auth::guard(); // Get the default guard
+        Auth::logout();
 
-        if ($guard->check()) {
-            $guard->logout();
+        $request->session()->invalidate();
 
-            // Invalidate the session to protect against session fixation attacks
-            $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-            // Regenerate the session token
-            $request->session()->regenerateToken();
-        }
-
-        return redirect()->route('auth.login.form');
+        return redirect()->route('home');
     }
 
 }

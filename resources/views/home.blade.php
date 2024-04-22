@@ -83,15 +83,36 @@
                         <div class="full">
                             <div class="right_header_info">
                                 <ul class="list-inline">
-
+                                    @auth('admin')
                                         <li class="list-inline-item">
-                                            <a class="btn btn-outline-success active" href="{{ route('login.show') }}">ورود</a>
-                                            <a class="btn btn-outline-success" href="">ثبت نام فروشندگان</a>
+                                            <form id="logout-form-admin" action="{{ route('logout') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button class="btn btn-outline-success custom-button" type="submit">خروج</button>
+                                            </form>
+                                            <a class="btn btn-outline-success" href="{{route('admin.restaurantCategories.index')}}">پنل ادمین</a>
                                         </li>
+                                    @endauth
 
-{{--                                    <li class="list-inline-item">--}}
-{{--                                        <img src="{{asset('images/search_icon.png')}}" alt="#" style="height: 20px;">--}}
-{{--                                    </li>--}}
+                                    <!-- Check if a seller is authenticated -->
+                                    @auth('seller')
+                                        <li class="list-inline-item">
+                                            <form id="logout-form-seller" action="{{ route('logout') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button class="btn btn-outline-success custom-button" type="submit">خروج</button>
+                                            </form>
+                                            <a class="btn btn-outline-success" href="">داشبورد فروشنده</a>
+                                        </li>
+                                    @endauth
+
+                                    @guest('admin')
+                                        @guest('seller')
+                                            <li class="list-inline-item">
+                                                <a class="btn btn-outline-success active" href="{{ route('login.show') }}">ورود</a>
+                                                <a class="btn btn-outline-success" href="">ثبت نام فروشندگان</a>
+                                            </li>
+                                        @endguest
+                                    @endguest
+
                                     <li class="list-inline-item">
                                         <button type="button" class="btn btn-primary" id="sidebarCollapse">
                                             <img src="{{asset('images/menu_icon.png')}}" alt="#" style="height: 20px;">
@@ -531,23 +552,4 @@
 
 </html>
 
-{{--@auth--}}
-{{--    <li class="list-inline-item">--}}
-{{--        <form id="logout-form" action="{{route('auth.logout')}}" method="POST" class="d-inline">--}}
-{{--            @csrf--}}
-{{--            <button class="btn btn-outline-success custom-button" type="submit">خروج</button>--}}
-{{--        </form>--}}
-{{--    </li>--}}
-{{--    <li class="list-inline-item">--}}
-{{--        @if (auth()->user()->role === 'admin')--}}
-{{--            <a class="btn btn-outline-success" href="{{route('restaurantcategories.index')}}">پنل ادمین</a>--}}
-{{--        @elseif (auth()->user()->role === 'seller')--}}
-{{--            <a class="btn btn-outline-success" href="">داشبورد فروشنده</a>--}}
-{{--        @endif--}}
-{{--    </li>--}}
-{{--@else--}}
-{{--    <li class="list-inline-item">--}}
-{{--        <a class="btn btn-outline-success active" href="{{ route('auth.login.form') }}">ورود</a>--}}
-{{--        <a class="btn btn-outline-success" href="{{ route('auth.register.form') }}">ثبت نام فروشندگان</a>--}}
-{{--    </li>--}}
-{{--@endauth--}}
+

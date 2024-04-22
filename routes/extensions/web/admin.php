@@ -3,8 +3,11 @@
 use App\Http\Controllers\Admin\RestaurantCategoryController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
 
-    Route::resource('restaurantcategories', RestaurantCategoryController::class);
-
+    // region authenticated
+    Route::middleware('auth:admin')->group(function () {
+        Route::resource('restaurantCategories', RestaurantCategoryController::class);
+    });
+    // endregion
 });
