@@ -15,15 +15,15 @@
         </div>
     @endif
     <div class="flex justify-between items-center pb-4">
-        <h1 class="text-3xl font-bold text-gray-800">دسته‌بندی‌های رستوران‌ها</h1>
+        <h1 class="text-3xl font-bold text-gray-800">دسته‌بندی‌های غذاها</h1>
         <div>
-            <form action="{{ route('admin.restaurantCategories.index') }}" method="GET" class="inline">
+            <form action="{{ route('admin.foodCategories.index') }}" method="GET" class="inline">
                 <input type="text" name="search" placeholder="جستجو..." class="px-4 py-2 border rounded-l-lg focus:outline-none focus:shadow-outline text-gray-600" value="{{ request('search') }}">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg">
                     جستجو
                 </button>
             </form>
-            <a href="{{ route('admin.restaurantCategories.create') }}" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+            <a href="{{ route('admin.foodCategories.create') }}" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
                 افزودن دسته‌بندی
             </a>
         </div>
@@ -44,10 +44,10 @@
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $category->category_name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <a href="{{ route('admin.restaurantCategories.edit', $category) }}" class="text-green-600 hover:text-green-900 bg-green-100 hover:bg-green-200 rounded-full px-3 py-1 font-bold transition duration-300 ease-in-out">
+                    <a href="{{ route('admin.foodCategories.edit', $category) }}" class="text-green-600 hover:text-green-900 bg-green-100 hover:bg-green-200 rounded-full px-3 py-1 font-bold transition duration-300 ease-in-out">
                         ویرایش
                     </a>
-                    <form action="{{ route('admin.restaurantCategories.destroy', $category) }}" method="POST" class="inline">
+                    <form action="{{ route('admin.foodCategories.destroy', $category) }}" method="POST" class="inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 rounded-full px-3 py-1 font-bold transition duration-300 ease-in-out" onclick="return confirm('آیا اطمینان دارید؟')">

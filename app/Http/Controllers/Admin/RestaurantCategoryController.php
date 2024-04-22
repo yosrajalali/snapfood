@@ -35,7 +35,7 @@ class RestaurantCategoryController extends Controller
         RestaurantCategory::create($request->validated());
 
         return redirect()->route('admin.restaurantCategories.index')
-            ->with('success', 'Category created successfully.');
+            ->with('success', __('category.create'));
     }
 
     public function edit(RestaurantCategory $restaurantCategory)
@@ -46,14 +46,10 @@ class RestaurantCategoryController extends Controller
 
     public function update(UpdateRestaurantCatRequest $request, RestaurantCategory $restaurantCategory)
     {
-        $request->validate([
-            'category_name' => 'required|string|max:255'
-        ]);
-
-        $restaurantCategory->update($request->all());
+        $restaurantCategory->update($request->validated());
 
         return redirect()->route('admin.restaurantCategories.index')
-            ->with('success', 'Category updated successfully.');
+            ->with('success', __('category.update'));
     }
 
 
@@ -62,6 +58,6 @@ class RestaurantCategoryController extends Controller
         $restaurantCategory->delete();
 
         return redirect()->route('admin.restaurantCategories.index')
-            ->with('success', 'Category deleted successfully.');
+            ->with('success', __('category.destroy'));
     }
 }
