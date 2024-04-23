@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('seller_id')->constrained('sellers')->onDelete('cascade');
             $table->string('name');
             $table->string('type');
-            $table->string('contact_number');
+            $table->string('phone_number');
             $table->text('address');
             $table->string('bank_account_number');
             $table->boolean('is_complete')->default(false);

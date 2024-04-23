@@ -100,7 +100,7 @@
                                                 @csrf
                                                 <button class="btn btn-outline-success custom-button" type="submit">خروج</button>
                                             </form>
-                                            <a class="btn btn-outline-success" href="{{route('seller.dashboard')}}">داشبورد فروشنده</a>
+                                            <a class="btn btn-outline-success" href="{{route('seller.index')}}">داشبورد فروشنده</a>
                                         </li>
                                     @endauth
 

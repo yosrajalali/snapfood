@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Seller;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Seller>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Buyer>
  */
-class SellerFactory extends Factory
+class BuyerFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,8 +19,7 @@ class SellerFactory extends Factory
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
-            'phone_number' => '09' . $this->faker->numerify('#########'),
-            'password' => bcrypt('password'),
+            'mobile_number' => '09' . $this->faker->numerify('#########'),
         ];
     }
 }

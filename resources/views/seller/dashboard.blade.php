@@ -3,28 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پنل فروشنده</title>
+    <title>داشبورد فروشنده</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-200">
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-3xl font-bold text-center">پنل فروشنده</h1>
-    <p class="text-red-500 text-lg mt-4 mb-8 text-center">لطفا اطلاعات رستوران خود را تکمیل کنید تا بتوانید به سایر بخش‌ها دسترسی داشته باشید.</p>
+    <h1 class="text-4xl font-bold text-center text-gray-800">داشبورد رستوران</h1>
 
-    <div class="flex flex-wrap justify-center gap-5">
-        <a href="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">تکمیل اطلاعات رستوران</a>
+    <!-- Dashboard Navigation -->
+    <div class="flex justify-around mt-8 mb-4 text-sm">
+        <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">سفارشات کنونی</a>
+        <a href="#" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">غذاها</a>
+        <a href="#" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">گزارش فروش</a>
+        <a href="#" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">تنظیمات رستوران</a>
+    </div>
 
-        <!-- Other Links (Conditionally Disabled) -->
-        @php
-            $isRestaurantInfoComplete = false; // This should be determined based on your application logic
-        @endphp
+    <!-- Current Orders Section -->
+    <div class="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-xl mb-4 font-semibold text-gray-700">سفارشات جاری</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full leading-normal">
+                <thead>
+                <tr>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        شماره سفارش
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        مجموع هزینه
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        وضعیت
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
+                        تاریخ سفارش
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($recentOrders as $order)
+                    <tr>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                            {{ $order->id }}
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                            {{ number_format($order->total_price, 2) }} تومان
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                            <form action="{{ route('seller.orders.updateStatus', $order->id) }}" method="POST">
+                                @csrf
+                                <select name="status_id" onchange="this.form.submit()" class="text-sm">
+                                    @foreach ($statuses as $status)
+                                        <option value="{{ $status->id }}" {{ $order->status_id == $status->id ? 'selected' : '' }} >
+                                            {{ $status->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                            {{ $order->created_at->format('Y/m/d') }}
+                        </td>
+                    </tr>
+                @endforeach
 
-        <a href="#" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300' }} text-white font-bold py-2 px-4 rounded cursor-not-allowed" onclick="return false;">داشبورد</a>
-        <a href="#" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300' }} text-white font-bold py-2 px-4 rounded cursor-not-allowed" onclick="return false;">غذاها</a>
-        <a href="#" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300' }} text-white font-bold py-2 px-4 rounded cursor-not-allowed" onclick="return false;">وضعیت سفارش‌ها</a>
-        <a href="#" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300' }} text-white font-bold py-2 px-4 rounded cursor-not-allowed" onclick="return false;">بررسی‌ها</a>
-        <a href="#" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300' }} text-white font-bold py-2 px-4 rounded cursor-not-allowed" onclick="return false;">گزارش‌ها</a>
-        <a href="#" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300' }} text-white font-bold py-2 px-4 rounded cursor-not-allowed" onclick="return false;">تنظیمات رستوران</a>
+                </tbody>
+            </table>
+            <div class="px-5 py-5">
+                {{ $recentOrders->links() }}
+            </div>
+        </div>
     </div>
 </div>
 </body>

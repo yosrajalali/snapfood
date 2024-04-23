@@ -8,4 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Restaurant extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'seller_id',
+        'name',
+        'type',
+        'phone_number',
+        'address',
+        'bank_account_number',
+        'is_complete'
+    ];
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

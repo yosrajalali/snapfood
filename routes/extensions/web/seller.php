@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Restaurant\RestaurantController;
 use App\Http\Controllers\Seller\AuthSellerController;
 use App\Http\Controllers\Seller\SellerController;
@@ -12,8 +13,15 @@ Route::prefix('seller')->name('seller.')->group(function () {
 
     // region authenticated
     Route::middleware('auth:seller')->group(function () {
-        Route::get('/dashboard', [SellerController::class, 'index'])->name('dashboard');
+        Route::get('/index', [SellerController::class, 'index'])->name('index');
+        Route::get('/dashboard', [SellerController::class, 'dashboard'])->name('dashboard');
+
         Route::get('/restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
+        Route::post('/restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
+
+//        Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+        Route::post('/orders/{order}/update-status', [OrderController::class, 'updateOrderStatus'])->name('orders.updateStatus');
+
     });
     // endregion
 });
