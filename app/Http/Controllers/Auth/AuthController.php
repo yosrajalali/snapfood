@@ -21,36 +21,10 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function showRegistrationForm(): View
-    {
-        return view('auth.register');
-    }
-
-    public function register(UserRegistrationRequest $request, $guard)
-    {
-        $validated = $request->validated();
-
-        $user = User::query()->create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => $guard === 'seller' ? Hash::make($validated['password']) : null,
-            'phone_number' => $validated['phone_number'],
-            'role' => $guard,
-        ]);
-
-        if ($guard === 'buyer') {
-            $token = $user->createToken('apiToken')->plainTextToken;
-            return response()->json(['token' => $token], 200);
-        } else {
-            Auth::login($user);
-            return redirect()->route('home');
-        }
-    }
-
     public function login(LoginRequest $request): JsonResponse|RedirectResponse
     {
         $user = User::where('email', $request->email)->first();
-        $guard = 'admin'; // Assuming 'web' is the default guard for Users
+        $guard = 'admin'; // Assuming 'admin' is the default guard for Users
 
         // If no user found, check Sellers
         if (!$user) {

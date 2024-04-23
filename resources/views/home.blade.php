@@ -89,7 +89,7 @@
                                                 @csrf
                                                 <button class="btn btn-outline-success custom-button" type="submit">خروج</button>
                                             </form>
-                                            <a class="btn btn-outline-success" href="{{route('admin.restaurantCategories.index')}}">پنل ادمین</a>
+                                            <a class="btn btn-outline-success" href="{{route('admin.dashboard')}}">پنل ادمین</a>
                                         </li>
                                     @endauth
 
@@ -100,7 +100,7 @@
                                                 @csrf
                                                 <button class="btn btn-outline-success custom-button" type="submit">خروج</button>
                                             </form>
-                                            <a class="btn btn-outline-success" href="">داشبورد فروشنده</a>
+                                            <a class="btn btn-outline-success" href="{{route('seller.dashboard')}}">داشبورد فروشنده</a>
                                         </li>
                                     @endauth
 
@@ -108,7 +108,7 @@
                                         @guest('seller')
                                             <li class="list-inline-item">
                                                 <a class="btn btn-outline-success active" href="{{ route('login.show') }}">ورود</a>
-                                                <a class="btn btn-outline-success" href="">ثبت نام فروشندگان</a>
+                                                <a class="btn btn-outline-success" href="{{route('seller.showRegister')}}">ثبت نام فروشندگان</a>
                                             </li>
                                         @endguest
                                     @endguest
@@ -131,8 +131,8 @@
                 </div>
             @endif
         </header>
-
         <!-- end header -->
+
         <!-- start slider section -->
         <div class="slider_section">
 

@@ -14,7 +14,7 @@ class RestaurantCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'فست فود',
+            'رستوران',
             'سنتی',
             'دریایی',
             'ایتالیایی'

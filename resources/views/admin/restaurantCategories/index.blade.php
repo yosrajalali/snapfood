@@ -59,7 +59,7 @@
         @endforeach
         </tbody>
     </table>
-    <a href="" class=" hover:text-gray-600 text-blue-500 font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+    <a href="{{route('admin.dashboard')}}" class=" hover:text-gray-600 text-blue-500 font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
         بازگشت به داشبورد
     </a>
     <div class="py-4">
