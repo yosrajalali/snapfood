@@ -14,7 +14,7 @@ class OrderController extends Controller
         $order->status_id = $request->status_id;
         $order->save();
 
-        return redirect()->back()->with('success', 'وضعیت سفارش با موفقیت به‌روزرسانی شد.');
+        return redirect()->back()->with('success', __('response.status_order.update'));
     }
 
     public function archivedOrders()

@@ -16,4 +16,9 @@ class Seller extends Authenticatable
         'password',
         'phone_number'
     ];
+
+    public function restaurant()
+    {
+        return $this->hasOne(Restaurant::class);
+    }
 }

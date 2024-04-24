@@ -3,6 +3,7 @@
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Restaurant\RestaurantController;
 use App\Http\Controllers\Seller\AuthSellerController;
+use App\Http\Controllers\Seller\FoodController;
 use App\Http\Controllers\Seller\SellerController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,8 @@ Route::prefix('seller')->name('seller.')->group(function () {
         //Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::post('/orders/{order}/update-status', [OrderController::class, 'updateOrderStatus'])->name('orders.updateStatus');
         Route::get('/archived-orders', [OrderController::class, 'archivedOrders'])->name('archived-orders');
+
+        Route::resource('foods', FoodController::class);
 
     });
     // endregion
