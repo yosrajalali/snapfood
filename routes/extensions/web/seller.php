@@ -19,8 +19,9 @@ Route::prefix('seller')->name('seller.')->group(function () {
         Route::get('/restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
         Route::post('/restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
 
-//        Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+        //Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::post('/orders/{order}/update-status', [OrderController::class, 'updateOrderStatus'])->name('orders.updateStatus');
+        Route::get('/archived-orders', [OrderController::class, 'archivedOrders'])->name('archived-orders');
 
     });
     // endregion

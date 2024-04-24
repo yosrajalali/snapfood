@@ -24,8 +24,10 @@ class SellerController extends Controller
     public function dashboard()
     {
         $threeDaysAgo = Carbon::now()->subDays(3);
+        $deliveredStatusId = OrderStatus::where('name', 'تحویل گرفته شد')->first()->id;
 
         $recentOrders = Order::where('created_at', '>=', $threeDaysAgo)
+            ->where('status_id', '!=', $deliveredStatusId)
             ->latest()
             ->paginate(7);
         $statuses = OrderStatus::all();
