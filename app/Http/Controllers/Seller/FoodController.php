@@ -7,6 +7,7 @@ use App\Http\Requests\StoreFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
 use App\Models\Food;
 use App\Models\FoodCategory;
+use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,11 @@ class FoodController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Food::query();
+        $seller = Auth::user();
+        $restaurantId = $seller->restaurant->id;
+
+        $query = Food::where('restaurant_id', $restaurantId);
+
 
         if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');
@@ -88,4 +93,14 @@ class FoodController extends Controller
 
         return redirect()->route('seller.foods.index')->with('success', __('response.food.delete'));
     }
+
+    public function toggleFoodParty($id): RedirectResponse
+    {
+        $food = Food::findOrFail($id);
+        $food->food_party = !$food->food_party;
+        $food->save();
+
+        return back()->with('success', __('response.toggle.food_party'));
+    }
+
 }

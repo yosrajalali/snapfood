@@ -16,9 +16,15 @@ class Restaurant extends Model
         'phone_number',
         'address',
         'bank_account_number',
-        'is_complete'
+        'is_complete',
+        'is_open',
+        'delivery_cost',
+        'operational_hours'
     ];
 
+    protected $casts = [
+        'operational_hours' => 'array'
+    ];
     public function seller()
     {
         return $this->belongsTo(Seller::class);

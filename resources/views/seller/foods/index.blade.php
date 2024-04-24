@@ -17,6 +17,8 @@
         <a href="{{route('seller.foods.index')}}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">غذاها</a>
         <a href="#" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">گزارش فروش</a>
         <a href="#" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">تنظیمات رستوران</a>
+        <a href="{{ route('seller.index') }}" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">بازگشت به صفحه اصلی</a>
+
     </div>
 
     <!-- Session Message -->
@@ -64,6 +66,12 @@
                     قیمت
                 </th>
                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    تخفیف
+                </th>
+                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    قیمت با تخفیف
+                </th>
+                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     عملیات
                 </th>
             </tr>
@@ -88,18 +96,37 @@
                         {{ number_format($food->price, 2) }} تومان
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                        {{ $food->discount }} درصد
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                        {{ number_format($food->price * (1 - $food->discount / 100),2) }} تومان
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                         <a href="{{ route('seller.foods.edit', $food) }}" class="text-blue-600 hover:text-blue-900">ویرایش</a>
                         <form action="{{ route('seller.foods.destroy', $food) }}" method="POST" onsubmit="return confirm('آیا مطمئن هستید؟');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-600 hover:text-red-900">حذف</button>
                         </form>
+
+                        <a href="{{ route('seller.foods.toggle-food-party', $food) }}"
+                           class="text-purple-600 hover:text-purple-900"
+                           onclick="event.preventDefault(); document.getElementById('food-party-form-{{ $food->id }}').submit();">
+                            {{ $food->food_party ? 'حذف از فود پارتی' : 'افزودن به فود پارتی' }}
+                        </a>
+
+                        <form id="food-party-form-{{ $food->id }}" action="{{ route('seller.foods.toggle-food-party', $food) }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+
                     </td>
+
                 </tr>
             @endforeach
 
             </tbody>
         </table>
+
         <div class="px-5 py-5">
             {{ $foods->links() }}
         </div>

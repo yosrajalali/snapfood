@@ -13,7 +13,9 @@
 
     <div class="flex flex-wrap justify-center gap-5">
 
-        <a href="{{route('seller.restaurants.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ $isRestaurantInfoComplete ? 'مشاهده اطلاعات رستوران' : 'تکمیل اطلاعات رستوران' }}</a>
+        <a href="{{ $isRestaurantInfoComplete ? route('seller.restaurant.settings.edit') : route('seller.restaurants.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            {{ $isRestaurantInfoComplete ? 'مشاهده اطلاعات رستوران' : 'تکمیل اطلاعات رستوران' }}
+        </a>
 
         <!-- Other Links (Conditionally Enabled) -->
         <a href="{{route('seller.dashboard')}}" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed' }} text-white font-bold py-2 px-4 rounded">داشبورد</a>
