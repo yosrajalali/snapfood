@@ -15,7 +15,11 @@ class SellerController extends Controller
 {
     public function index(): View
     {
-        $restaurant = Restaurant::where('seller_id', Auth::id())->first();
+//        $restaurant = Restaurant::where('seller_id', Auth::id())->first();
+//        $isRestaurantInfoComplete = $restaurant ? $restaurant->is_complete : false;
+
+        $seller = Auth::user();
+        $restaurant = $seller->restaurant;
         $isRestaurantInfoComplete = $restaurant ? $restaurant->is_complete : false;
 
         return view('seller.index', compact('isRestaurantInfoComplete'));
@@ -26,7 +30,11 @@ class SellerController extends Controller
         $threeDaysAgo = Carbon::now()->subDays(3);
         $deliveredStatusId = OrderStatus::where('name', 'تحویل گرفته شد')->first()->id;
 
+        $seller = Auth::user();
+        $restaurantId = $seller->restaurant->id;
+
         $recentOrders = Order::where('created_at', '>=', $threeDaysAgo)
+            ->where('restaurant_id', $restaurantId)
             ->where('status_id', '!=', $deliveredStatusId)
             ->latest()
             ->paginate(7);

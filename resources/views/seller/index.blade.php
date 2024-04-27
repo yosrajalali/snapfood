@@ -9,6 +9,13 @@
 <body class="bg-gray-100">
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-3xl font-bold text-center">پنل فروشنده</h1>
+
+    @if(session('success'))
+        <div class="bg-green-200 border-l-4 border-green-500 text-green-700 p-4 mt-4 mb-8" role="alert">
+            <p>{{ session('success') }}</p>
+        </div>
+    @endif
+
     <p class="text-red-500 text-lg mt-4 mb-8 text-center">{{ $isRestaurantInfoComplete ?'' : 'لطفا اطلاعات رستوران خود را تکمیل کنید تا بتوانید به سایر بخش‌ها دسترسی داشته باشید.' }}</p>
 
     <div class="flex flex-wrap justify-center gap-5">

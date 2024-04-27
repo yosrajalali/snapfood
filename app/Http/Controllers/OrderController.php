@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -21,7 +22,11 @@ class OrderController extends Controller
     {
         $deliveredStatusId = OrderStatus::query()->where('name', 'تحویل گرفته شد')->first()->id;
 
-        $archivedOrders = Order::query()->where('status_id', $deliveredStatusId)
+        $seller = Auth::user();
+        $restaurantId = $seller->restaurant->id;
+        $archivedOrders = Order::query()
+            ->where('restaurant_id', $restaurantId)
+            ->where('status_id', $deliveredStatusId)
             ->latest()
             ->paginate(7);
         return view('seller.order.archived-orders', compact('archivedOrders'));
