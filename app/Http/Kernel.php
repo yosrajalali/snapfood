@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\Custom\Admin;
 use App\Http\Middleware\Custom\Buyer;
+use App\Http\Middleware\Custom\ForceJson;
 use App\Http\Middleware\Custom\Seller;
 use App\Http\Middleware\EnsureRestaurantIsComplete;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -38,6 +39,7 @@ class Kernel extends HttpKernel
 //        'seller' => Seller::class,
 //        'buyer' => Buyer::class,
         'restaurant.complete' => EnsureRestaurantIsComplete::class,
+        'force.json' => ForceJson::class,
     ];
 
     protected $middlewareGroups = [

@@ -61,7 +61,7 @@ class RestaurantController extends Controller
             $restaurant->save();
         }
 
-        return redirect()->route('seller.index')->with('success', 'تنظیمات رستوران با موفقیت به روز رسانی شد.');
+        return redirect()->route('seller.index')->with('success', __('response.restaurant.update'));
     }
 
 }

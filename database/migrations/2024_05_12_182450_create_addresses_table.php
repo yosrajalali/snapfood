@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('buyers', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('mobile_number')->unique();
-            $table->string('password');
+            $table->foreignId('buyer_id')->constrained('buyers')->onDelete('cascade');
+            $table->string('title');
+            $table->text('address');
+            $table->double('latitude', 15, 10);
+            $table->double('longitude', 15, 10);
+            $table->boolean('is_current')->default(false);
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('buyers');
+        Schema::dropIfExists('addresses');
     }
 };

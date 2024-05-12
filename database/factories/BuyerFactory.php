@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Buyer;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Buyer>
+ * @extends Factory<Buyer>
  */
 class BuyerFactory extends Factory
 {
@@ -20,6 +22,7 @@ class BuyerFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'mobile_number' => '09' . $this->faker->numerify('#########'),
+            'password' => Hash::make('password'),
         ];
     }
 }

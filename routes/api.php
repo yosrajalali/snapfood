@@ -15,17 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
-Route::prefix('auth')->name('buyer.')->group(function () {
-    Route::post('register/{guard}', [AuthController::class, 'register'])->name('register');
-    Route::post('login', [AuthController::class, 'login'])->name('login');
-});
+require_once __DIR__ . '/extensions/api-base.php';
 
-//protected routes
-Route::middleware(['auth:sanctum'])->group(function () {
 
-});
 
