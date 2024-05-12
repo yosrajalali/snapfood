@@ -9,13 +9,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('seller')->name('seller.')->group(function () {
 
-    Route::get('/register', [AuthSellerController::class, 'showRegister'])->name('showRegister');
-    Route::post('/register', [AuthSellerController::class, 'register'])->name('register');
+    Route::middleware('guest:seller,admin')->group(function (){
+        Route::get('/register', [AuthSellerController::class, 'showRegister'])->name('showRegister');
+        Route::post('/register', [AuthSellerController::class, 'register'])->name('register');
+    });
+
 
     // region authenticated
     Route::middleware('auth:seller')->group(function () {
         Route::get('/index', [SellerController::class, 'index'])->name('index');
-        Route::get('/dashboard', [SellerController::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboard', [SellerController::class, 'dashboard'])->name('dashboard')
+            ->middleware('restaurant.complete');
 
         Route::get('/restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
         Route::post('/restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
@@ -29,8 +33,6 @@ Route::prefix('seller')->name('seller.')->group(function () {
 
         Route::resource('foods', FoodController::class);
         Route::post('/foods/{id}/toggle-food-party', [FoodController::class, 'toggleFoodParty'])->name('foods.toggle-food-party');
-
-
 
     });
     // endregion

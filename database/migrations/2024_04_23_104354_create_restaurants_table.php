@@ -21,8 +21,9 @@ return new class extends Migration
             $table->string('bank_account_number');
             $table->boolean('is_complete')->default(false);
             $table->decimal('delivery_cost', 8, 2)->nullable();
-            $table->string('operational_hours')->nullable();
+            $table->text('operational_hours')->nullable();
             $table->boolean('is_open')->default(true);
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

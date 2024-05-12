@@ -21,13 +21,13 @@
     <div class="flex flex-wrap justify-center gap-5">
 
         <a href="{{ $isRestaurantInfoComplete ? route('seller.restaurant.settings.edit') : route('seller.restaurants.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            {{ $isRestaurantInfoComplete ? 'مشاهده اطلاعات رستوران' : 'تکمیل اطلاعات رستوران' }}
+            {{ $isRestaurantInfoComplete ? 'تنظیمات رستوران' : 'تکمیل اطلاعات رستوران' }}
         </a>
 
         <!-- Other Links (Conditionally Enabled) -->
         <a href="{{route('seller.dashboard')}}" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed' }} text-white font-bold py-2 px-4 rounded">داشبورد</a>
-        <a href="" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed' }} text-white font-bold py-2 px-4 rounded">وضعیت سفارش‌ها</a>
         <a href="#" class="{{ $isRestaurantInfoComplete ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed' }} text-white font-bold py-2 px-4 rounded">نظرات</a>
+        <a href="/" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">بازگشت به صفحه اصلی</a>
 
     </div>
 </div>

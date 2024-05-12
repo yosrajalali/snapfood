@@ -94,6 +94,28 @@
                 </div>
             </div>
 
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="image">
+                    تصویر رستوران
+                </label>
+                <input type="file" id="image" name="image" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @error('image')
+                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                @enderror
+            </div>
+            @if ($restaurant->image)
+                <img src="{{ $restaurant->image }}" alt="Current Image" class="mt-2 w-20 h-20 mb-3 object-cover">
+            @endif
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="is_open">
+                    وضعیت رستوران
+                </label>
+                <select id="is_open" name="is_open" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="1" {{ old('is_open', $restaurant->is_open) ? 'selected' : '' }}>باز</option>
+                    <option value="0" {{ !old('is_open', $restaurant->is_open) ? 'selected' : '' }}>بسته</option>
+                </select>
+            </div>
+
 
             <div class="flex items-center justify-between">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">

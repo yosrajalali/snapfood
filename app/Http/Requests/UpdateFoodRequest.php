@@ -28,7 +28,7 @@ class UpdateFoodRequest extends FormRequest
             'price' => ['required', 'numeric', 'min:0'],
             'ingredients' => ['nullable', 'string'],
             'image' => ['nullable', 'image','mimes:jpeg,png,jpg', 'max:2048'],
-            'discount' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'discount_id' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }
 

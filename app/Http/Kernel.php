@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\Custom\Admin;
 use App\Http\Middleware\Custom\Buyer;
 use App\Http\Middleware\Custom\Seller;
+use App\Http\Middleware\EnsureRestaurantIsComplete;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -33,9 +34,10 @@ class Kernel extends HttpKernel
      */
 
     protected $routeMiddleware = [
-        'admin' => Admin::class,
-        'seller' => Seller::class,
-        'buyer' => Buyer::class,
+//        'admin' => Admin::class,
+//        'seller' => Seller::class,
+//        'buyer' => Buyer::class,
+        'restaurant.complete' => EnsureRestaurantIsComplete::class,
     ];
 
     protected $middlewareGroups = [

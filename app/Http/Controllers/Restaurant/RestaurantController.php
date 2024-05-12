@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Restaurant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateRestaurantRequest;
+use App\Http\Requests\UpdateRestaurantRequest;
 use App\Models\FoodCategory;
 use App\Models\Restaurant;
 use App\Models\RestaurantCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class RestaurantController extends Controller
@@ -44,62 +46,22 @@ class RestaurantController extends Controller
         return view('seller.restaurant.settings', compact('restaurant', 'categories'));
     }
 
-    public function update(Request $request)
+    public function update(UpdateRestaurantRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'address' => 'required|string|max:1000',
-            'bank_account_number' => 'nullable|string|max:255',
-            'delivery_cost' => 'nullable|numeric',
-            'operational_hours' => 'array',
-            'operational_hours.*' => 'array',  // Ensure each day can hold an array of times
-            'operational_hours.*.*' => 'nullable|string', // Validate each time entry
-        ]);
-
         $restaurant = Auth::user()->restaurant;
 
-        // Processing operational hours to ensure empty or null values are not stored
-        $operationalHours = array_filter($request->operational_hours, function ($day) {
-            return array_filter($day); // Filter out empty arrays for days
-        });
+        $data = $request->validated();
+        $data['operational_hours'] = json_encode($data['operational_hours']);
 
-        $restaurant->update([
-            'name' => $request->name,
-            'type' => $request->type,
-            'address' => $request->address,
-            'bank_account_number' => $request->bank_account_number,
-            'delivery_cost' => $request->delivery_cost,
-            'operational_hours' => json_encode($operationalHours),
-        ]);
+        $restaurant->update($data);
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $path = $request->file('image')->store('restaurants', 'public');
+            $restaurant->image = '/storage/' . $path;
+            $restaurant->save();
+        }
 
         return redirect()->route('seller.index')->with('success', 'تنظیمات رستوران با موفقیت به روز رسانی شد.');
     }
 
-
-//    public function update(Request $request)
-//    {
-//        $request->validate([
-//            'name' => 'required|string|max:255',
-//            'type' => 'required|string|max:255',
-//            'address' => 'required|string|max:1000',
-//            'bank_account_number' => 'nullable|string|max:255',
-//            'delivery_cost' => 'nullable|numeric',
-//            'operational_hours' => 'array',
-//            'operational_hours.*' => 'nullable|string',
-//        ]);
-//
-//        $restaurant = Auth::user()->restaurant;
-//
-//        $restaurant->update([
-//            'name' => $request->name,
-//            'type' => $request->type,
-//            'address' => $request->address,
-//            'bank_account_number' => $request->bank_account_number,
-//            'delivery_cost' => $request->delivery_cost,
-//            'operational_hours' => json_encode($request->operational_hours),
-//        ]);
-//
-//        return redirect()->route('seller.index')->with('success', 'تنظیمات رستوران با موفقیت به روز رسانی شد.');
-//    }
 }

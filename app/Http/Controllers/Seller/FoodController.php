@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
+use App\Models\Discount;
 use App\Models\Food;
 use App\Models\FoodCategory;
 use App\Models\Order;
@@ -70,7 +71,10 @@ class FoodController extends Controller
     public function edit(Food $food): View
     {
         $categories = FoodCategory::all();
-        return view('seller.foods.edit', compact('food', 'categories'));
+        $discounts = Discount::all();
+        $restaurant = Auth::user()->restaurant;
+//        dd($food->discount);
+        return view('seller.foods.edit', compact('food', 'categories', 'discounts', 'restaurant'));
     }
 
     public function update(UpdateFoodRequest $request, Food $food): RedirectResponse
@@ -78,6 +82,12 @@ class FoodController extends Controller
         $validated = $request->validated();
 
         $food->update($validated);
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $path = $request->file('image')->store('foods', 'public');
+            $food->image = '/storage/' . $path;
+            $food->save();
+        }
         return redirect()->route('seller.foods.index')->with('success', __('response.food.update'));
     }
 

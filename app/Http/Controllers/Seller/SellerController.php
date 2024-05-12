@@ -15,8 +15,6 @@ class SellerController extends Controller
 {
     public function index(): View
     {
-//        $restaurant = Restaurant::where('seller_id', Auth::id())->first();
-//        $isRestaurantInfoComplete = $restaurant ? $restaurant->is_complete : false;
 
         $seller = Auth::user();
         $restaurant = $seller->restaurant;

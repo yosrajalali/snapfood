@@ -59,13 +59,31 @@
                 </label>
                 <input type="text" name="ingredients" id="ingredients" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="{{ old('ingredients', $food->ingredients) }}">
             </div>
+{{--            <div class="mb-4">--}}
+{{--                <label class="block text-gray-700 text-sm font-bold mb-2" for="ingredients">--}}
+{{--                    تخفیف--}}
+{{--                </label>--}}
+{{--                <input type="number" name="discount" value="{{ old('discount', $food->discount) }}" placeholder="تخفیف (%)" class="form-control" min="0" max="100">--}}
+
+{{--            </div>--}}
+
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="ingredients">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="discount_id">
                     تخفیف
                 </label>
-                <input type="number" name="discount" value="{{ old('discount', $food->discount) }}" placeholder="تخفیف (%)" class="form-control" min="0" max="100">
-
+                <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="discount_id" name="discount_id">
+                    <option value="">انتخاب تخفیف</option>
+                    @foreach ($discounts as $discount)
+                        <option value="{{ $discount->id }}" {{ old('discount_id', $food->discount_id) == $discount->id ? 'selected' : '' }}>
+                            {{ $discount->name }} - {{ $discount->percentage }}%
+                        </option>
+                    @endforeach
+                </select>
+                @error('discount_id')
+                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                @enderror
             </div>
+
 
 
             <div class="mb-4">

@@ -96,10 +96,10 @@
                         {{ number_format($food->price, 2) }} تومان
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                        {{ $food->discount }} درصد
+                        {{ $food->discount ? $food->discount->percentage . '%' : 'بدون تخفیف' }}
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                        {{ number_format($food->price * (1 - $food->discount / 100),2) }} تومان
+                        {{ $food->discount ? number_format($food->price * (1 - $food->discount->percentage / 100), 2) . ' تومان' : $food->price . ' تومان' }}
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                         <a href="{{ route('seller.foods.edit', $food) }}" class="text-blue-600 hover:text-blue-900">ویرایش</a>
