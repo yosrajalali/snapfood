@@ -38,7 +38,7 @@
                 <select id="type" name="type" class="shadow border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" onchange="document.getElementById('category_id').value = this.value">
                     <option value="">انتخاب کنید...</option>
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                        <option value="{{ $category->id }}" {{ old('category_id', $restaurant->category_id) == $category->id ? 'selected' : '' }}>{{ $category->category_name }}</option>
                     @endforeach
                 </select>
                 <input type="hidden" id="category_id" name="category_id" value="{{ old('category_id') }}">
@@ -72,30 +72,28 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="delivery_cost">
                     هزینه ارسال سفارشات
                 </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="delivery_cost" type="text" name="delivery_cost" value="{{ old('delivery_cost', $restaurant->delivery_cost) }}">
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="delivery_cost" type="text" name="delivery_cost" placeholder="یک عدد وارد کنید.(به تومان)" value="{{ old('delivery_cost', $restaurant->delivery_cost) }}">
                 @error('delivery_cost')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
             </div>
 
             <div class="mb-4">
-                ساعات کاری رستوران
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    ساعات کاری رستوران
+                </label>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach (['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'] as $day)
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">{{ $day }}</label>
-                            <input type="text" name="operational_hours[{{ $day }}][]" placeholder="09:00-12:00" value="{{ old('operational_hours.'.$day.'.0') }}" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            <input type="text" name="operational_hours[{{ $day }}][]" placeholder="13:00-17:00" value="{{ old('operational_hours.'.$day.'.1') }}" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            @error('operational_hours.' . $day . '.0')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                            @enderror
-                            @error('operational_hours.' . $day . '.1')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                            @enderror
+                            <label class="block text-sm font-medium text-gray-700">{{ __($day) }}</label>
+                            <input type="time" name="operational_hours[{{ $day }}][start]" value="{{ old('operational_hours.'.$day.'.start', json_decode($restaurant->operational_hours, true)[$day]['start'] ?? '') }}" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <input type="time" name="operational_hours[{{ $day }}][end]" value="{{ old('operational_hours.'.$day.'.end', json_decode($restaurant->operational_hours, true)[$day]['end'] ?? '') }}" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         </div>
                     @endforeach
                 </div>
             </div>
+
+
 
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="image">
