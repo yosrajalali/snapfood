@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Buyer\AddressController;
 use App\Http\Controllers\Buyer\AuthController;
+use App\Http\Controllers\Buyer\RestaurantController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function () {
@@ -21,12 +22,22 @@ Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function
             ->name('addresses.')
             ->controller(AddressController::class)
             ->group(function (){
+                //address
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::post('/{address}', 'setCurrent')->name('set_current');
             });
 
+        //profile
         Route::patch('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+
+        //restaurant
+        Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
+        Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show'])->name('restaurants.show');
+
+        Route::get('/restaurants/{restaurant}/foods', [RestaurantController::class, 'getFoods'])->name('restaurant.foods');
+
+
 
     });
     //endregion
