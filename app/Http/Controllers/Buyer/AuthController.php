@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         return response()->json([
             'data' => [
-                'message' => 'Register successful.',
+                'message' => __('response.buyer.register'),
                 'token' => $token
             ]
         ], 201);
@@ -52,7 +52,7 @@ class AuthController extends Controller
 
         return response()->json([
             'data' => [
-                'message' => 'Login successful.',
+                'message' => __('response.buyer.login'),
                 'token' => $token
             ]
         ]);
@@ -65,7 +65,7 @@ class AuthController extends Controller
         $user->update($request->validated());
 
         return response()->json([
-            'message' => 'Profile updated successfully',
+            'message' => __('response.buyer.update_profile'),
         ]);
     }
 

@@ -14,6 +14,7 @@ class Address extends Model
         'address',
         'latitude',
         'longitude',
+        'is_current',
     ];
 
     public function buyer()

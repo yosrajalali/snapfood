@@ -14,5 +14,10 @@ return [
     'discount.update' => 'تخفیف با موفقیت به‌روزرسانی شد.',
     'discount.delete' => 'تخفیف با موفقیت حذف شد.',
     'restaurant.update' => 'تنظیمات رستوران با موفقیت به روز رسانی شد.',
+    'buyer.update_profile' => 'پروفایل با موفقیت به روز رسانی شد.',
+    'buyer.login' => ' با موفقیت وارد شدید.',
+    'buyer.register' => 'ثبت نام شما با موفقیت انجام شد.',
+    'buyer.set_current_address'=> 'آدرس فعلی شما با موفقیت به روز رسانی شد.',
+    'buyer.address_added'=> 'آدرس با موفقیت اضافه شد.',
 ];
 

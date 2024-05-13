@@ -23,8 +23,21 @@ class LoginBuyerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:8',
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.required' => 'فیلد ایمیل الزامی است.',
+            'email.string' => 'فیلد ایمیل باید متن باشد.',
+            'email.email' => 'فرمت ایمیل وارد شده صحیح نیست.',
+            'email.max' => 'طول فیلد ایمیل نباید بیشتر از ۲۵۵ کاراکتر باشد.',
+            'password.required' => 'فیلد رمز عبور الزامی است.',
+            'password.string' => 'فیلد رمز عبور باید متن باشد.',
+            'password.min' => 'حداقل طول فیلد رمز عبور باید ۸ کاراکتر باشد.',
         ];
     }
 }
