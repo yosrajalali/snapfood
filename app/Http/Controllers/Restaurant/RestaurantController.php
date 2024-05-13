@@ -25,10 +25,12 @@ class RestaurantController extends Controller
     {
         $validated = $request->validated();
         $seller = Auth::user();
+        $categories = RestaurantCategory::all();
 
         Restaurant::create([
             'name' => $validated['name'],
-            'type' => $validated['type'],
+            'category_id' => $validated['category_id'],
+            'type' => $categories->where('id', $validated['category_id'])->first()->category_name,
             'phone_number' => $validated['phone_number'],
             'address' => $validated['address'],
             'bank_account_number' => $validated['bank_account_number'],
@@ -49,9 +51,11 @@ class RestaurantController extends Controller
     public function update(UpdateRestaurantRequest $request)
     {
         $restaurant = Auth::user()->restaurant;
+        $categories = RestaurantCategory::all();
 
         $data = $request->validated();
         $data['operational_hours'] = json_encode($data['operational_hours']);
+        $data['type'] = $categories->where('id', $data['category_id'])->first()->category_name;
 
         $restaurant->update($data);
 

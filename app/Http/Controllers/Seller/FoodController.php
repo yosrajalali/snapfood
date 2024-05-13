@@ -43,30 +43,63 @@ class FoodController extends Controller
     public function create(): View
     {
         $categories = FoodCategory::all();
+
+
         return view('seller.foods.create', compact('categories'));
     }
+
+//    public function store(StoreFoodRequest $request): RedirectResponse
+//    {
+//        $validated = $request->validated();
+//        $restaurant = Auth::user()->restaurant;
+//
+//        $path = null;
+//        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+//            $path = $validated['image']->store('foods', 'public'); // Storing image in 'storage/app/public/foods'
+//        }
+//
+//         Food::query()->create([
+//             'restaurant_id' => $restaurant->id,
+//             'name' => $validated['name'],
+//             'category_id' => $validated['category_id'],
+//             'price' => $validated['price'],
+//             'ingredients' => $validated['ingredients'] ?? null,
+//             'image' => '/storage/' . $path
+//        ]);
+//
+//        return redirect()->route('seller.foods.index')->with('success', __('response.food.create'));
+//    }
 
     public function store(StoreFoodRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         $restaurant = Auth::user()->restaurant;
 
-        $path = null;
+        // Handling image upload if present and valid
+        $imagePath = null;
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $path = $validated['image']->store('foods', 'public'); // Storing image in 'storage/app/public/foods'
+            $imagePath = $request->file('image')->store('foods', 'public'); // Store image in 'storage/app/public/foods'
+            $imagePath = '/storage/' . $imagePath; // Adjust path for public access
         }
 
-         Food::query()->create([
-             'restaurant_id' => $restaurant->id,
-             'name' => $validated['name'],
-             'category_id' => $validated['category_id'],
-             'price' => $validated['price'],
-             'ingredients' => $validated['ingredients'] ?? null,
-             'image' => '/storage/' . $path
+        // Creating the food item
+        $food = new Food([
+            'restaurant_id' => $restaurant->id,
+            'name' => $validated['name'],
+            'price' => $validated['price'],
+            'ingredients' => $validated['ingredients'] ?? null,
+            'image' => $imagePath
         ]);
+        $food->save();
+
+        // Attaching categories to the food item
+        if (isset($validated['category_ids'])) {
+            $food->categories()->attach($validated['category_ids']);
+        }
 
         return redirect()->route('seller.foods.index')->with('success', __('response.food.create'));
     }
+
 
     public function edit(Food $food): View
     {

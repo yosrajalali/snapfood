@@ -25,6 +25,7 @@ class UpdateRestaurantRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255',
+            'category_id' => ['required', 'integer', 'exists:restaurant_categories,id'],
             'address' => 'required|string|max:1000',
             'bank_account_number' => 'nullable|string|max:255',
             'delivery_cost' => 'nullable|numeric',

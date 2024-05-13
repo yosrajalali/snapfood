@@ -24,7 +24,8 @@ class StoreFoodRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'category_id' => ['required', 'exists:food_categories,id'],
+            'category_ids' => ['required', 'array'],
+            'category_ids.*' => ['exists:food_categories,id'],
             'price' => ['required', 'numeric', 'min:0'],
             'ingredients' => ['nullable', 'string'],
             'image' => ['nullable', 'image','mimes:jpeg,png,jpg', 'max:2048'],

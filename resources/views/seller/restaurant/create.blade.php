@@ -38,12 +38,14 @@
 
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="type">نوع رستوران</label>
-                <select id="type" name="type" class="shadow border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" >
+                <select id="type" name="type" class="shadow border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" onchange="document.getElementById('category_id').value = this.value">
                     <option value="">انتخاب کنید...</option>
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ old('type') == $category->id ? 'selected' : '' }}>{{ $category->category_name }}</option>
+                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                     @endforeach
                 </select>
+                <input type="hidden" id="category_id" name="category_id" value="{{ old('category_id') }}">
+
             </div>
 
             <div class="mb-4">

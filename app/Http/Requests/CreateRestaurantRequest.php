@@ -25,6 +25,7 @@ class CreateRestaurantRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'integer', 'exists:restaurant_categories,id'],
             'phone_number' => ['required', 'string', 'regex:/^09\d{9}$/', 'unique:restaurants'],
             'address' => ['required', 'string'],
             'bank_account_number' => ['required', 'string','min:12', 'max:16'],

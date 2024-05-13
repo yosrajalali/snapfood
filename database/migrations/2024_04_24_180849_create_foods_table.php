@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('ingredients')->nullable();
             $table->decimal('price', 8, 2);
             $table->string('image')->nullable();
-            $table->foreignId('category_id')->constrained('food_categories');
+//            $table->foreignId('category_id')->constrained('food_categories');
 //            $table->decimal('discount', 5, 2)->default(0)->nullable();
             $table->boolean('food_party')->default(false);
             $table->timestamps();

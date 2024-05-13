@@ -90,8 +90,13 @@
                         {{ $food->restaurant->name }}
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                        {{ $food->category->category_name }}
+                        @foreach ($food->categories as $category)
+                            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                               {{ $category->category_name }}
+                             </span>
+                        @endforeach
                     </td>
+
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                         {{ number_format($food->price, 2) }} تومان
                     </td>

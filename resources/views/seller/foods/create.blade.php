@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>افزودن غذای جدید</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#category_ids').select2({
+                placeholder: "Select categories",
+                allowClear: true
+            });
+        });
+    </script>
+
 </head>
 <body class="bg-gray-200">
 <div class="container mx-auto px-4 py-6">
@@ -31,13 +44,17 @@
         </div>
 
         <div class="mb-4">
-            <label for="category_id" class="block text-gray-700 text-sm font-bold mb-2">دسته‌بندی:</label>
-            <select name="category_id" id="category_id" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+            <label for="category_ids" class="block text-gray-700 text-sm font-bold mb-2">دسته‌بندی‌ها:</label>
+            <select name="category_ids[]" id="category_ids" multiple class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->category_name }}</option>
+                    <option value="{{ $category->id }}" {{ in_array($category->id, old('category_ids', [])) ? 'selected' : '' }}>
+                        {{ $category->category_name }}
+                    </option>
                 @endforeach
             </select>
         </div>
+
+
 
         <div class="mb-4">
             <label for="price" class="block text-gray-700 text-sm font-bold mb-2">قیمت:</label>
@@ -62,5 +79,6 @@
         </div>
     </form>
 </div>
+
 </body>
 </html>

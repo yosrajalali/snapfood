@@ -35,15 +35,18 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="type">
                     نوع رستوران
                 </label>
-                <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="type" name="type">
-                    <option value="فست فود" {{ old('type', $restaurant->type) == 'فست فود' ? 'selected' : '' }}>فست فود</option>
-                    <option value="سنتی" {{ old('type', $restaurant->type) == 'سنتی' ? 'selected' : '' }}>سنتی</option>
-                    <option value="کافه" {{ old('type', $restaurant->type) == 'کافه' ? 'selected' : '' }}>کافه</option>
+                <select id="type" name="type" class="shadow border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" onchange="document.getElementById('category_id').value = this.value">
+                    <option value="">انتخاب کنید...</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                    @endforeach
                 </select>
+                <input type="hidden" id="category_id" name="category_id" value="{{ old('category_id') }}">
                 @error('type')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
             </div>
+
 
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="address">

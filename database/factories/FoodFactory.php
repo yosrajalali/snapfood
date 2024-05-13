@@ -25,7 +25,7 @@ class FoodFactory extends Factory
             'ingredients' => $this->faker->sentence,
             'price' => $this->faker->numberBetween(10000, 50000),
             'image' => $this->faker->imageUrl(640, 480, 'food', true),
-            'category_id' => FoodCategory::query()->pluck('id')->random()
+
         ];
     }
 }

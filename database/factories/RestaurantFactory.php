@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Restaurant;
+use App\Models\RestaurantCategory;
 use App\Models\Seller;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,8 +21,9 @@ class RestaurantFactory extends Factory
     {
         return [
             'seller_id' => Seller::query()->inRandomOrder()->first()->id,
+            'category_id'=> RestaurantCategory::query()->inRandomOrder()->first()->id,
             'name' => $this->faker->company,
-            'type' => $this->faker->randomElement(['فست فود', 'سنتی', 'کافه', 'دریایی']),
+            'type' => RestaurantCategory::query()->inRandomOrder()->first()->category_name,
             'phone_number' => $this->faker->phoneNumber,
             'address' => $this->faker->address,
             'bank_account_number' => $this->faker->bankAccountNumber,
