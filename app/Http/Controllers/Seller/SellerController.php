@@ -25,7 +25,7 @@ class SellerController extends Controller
 
     public function dashboard()
     {
-        $threeDaysAgo = Carbon::now()->subDays(3);
+        $threeDaysAgo = Carbon::now()->subDays(10);
         $deliveredStatusId = OrderStatus::where('name', 'تحویل گرفته شد')->first()->id;
 
         $seller = Auth::user();

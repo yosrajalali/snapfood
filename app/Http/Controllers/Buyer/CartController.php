@@ -12,6 +12,7 @@ use App\Http\Resources\GetCartResource;
 use App\Models\Cart;
 use App\Models\Comment;
 use App\Models\Food;
+use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,50 +51,6 @@ class CartController extends Controller
         ]);
     }
 
-//    public function index(Request $request)
-//    {
-//        $buyerId = Auth::id(); // Get the authenticated buyer's ID
-//
-//        // Fetch carts with related food and restaurant data
-//        $carts = Cart::where('buyer_id', $buyerId)
-//            ->with(['foods' => function ($query) {
-//                $query->with(['restaurant']); // Ensure restaurant data is loaded with foods
-//            }])
-//            ->get();
-//
-//        return CartResource::collection($carts);
-//    }
-//
-//
-//    public function addToCart(AddToCartRequest $request)
-//    {
-//        $buyerId = Auth::id();
-//        $foodId = $request->food_id;
-//        $additionalCount = $request->count;
-//
-//        // Retrieve the cart for the buyer or create a new one
-//        $cart = Cart::firstOrCreate(['buyer_id' => $buyerId]);
-//
-//        // Attempt to retrieve the pivot entry for the food in the cart
-//        $pivot = $cart->foods()->where('food_id', $foodId)->first();
-//
-//        if ($pivot) {
-//            // Food is already in the cart, update the count
-//            $newCount = $pivot->pivot->count + $additionalCount;
-//            $cart->foods()->updateExistingPivot($foodId, ['count' => $newCount]);
-//        } else {
-//            // Food is not in the cart, add it with the initial count
-//            $cart->foods()->attach($foodId, ['count' => $additionalCount]);
-//        }
-//
-//        return response()->json([
-//            'message' => 'Food added or updated in cart successfully',
-//            'cart_id' => $cart->id,
-//            'new_count' => $pivot ? $newCount : $additionalCount  // Return the updated count if the food was already in the cart
-//        ]);
-//    }
-
-
     public function updateCart(UpdateCartRequest $request)
     {
         $buyer = Auth::user();
@@ -106,9 +63,8 @@ class CartController extends Controller
             return response()->json(['msg' => 'Cart item does not exist'], 404);
         }
 
-        // Update the existing cart item to the new count value
         $cart->update([
-            'count' => $request->count // Directly set the count to the new value
+            'count' => $request->count
         ]);
 
         return response()->json([
@@ -132,15 +88,17 @@ class CartController extends Controller
         return new GetCartResource($cart);
     }
 
-    public function pay(PayCartRequest $request, Cart $cart)
+
+    public function pay(PayCartRequest $request, $cartId)
     {
-        if ($request->user()->id !== $cart->buyer_id) {
+        $cart = Cart::with('food.restaurant')->find($cartId); // Ensure the food relationship loads the restaurant as well
+
+        if (!$cart || $cart->buyer_id != Auth::id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         DB::beginTransaction();
         try {
-
             $total = $cart->count * $cart->food->price;
 
             $paymentSuccessful = true;
@@ -149,13 +107,28 @@ class CartController extends Controller
                 throw new \Exception('Payment failed');
             }
 
+            $order = new Order([
+                'buyer_id' => $cart->buyer_id,
+                'restaurant_id' => $cart->food->restaurant->id,
+                'total_price' => $total,
+                'status_id' => 1,
+            ]);
+            $order->save();
 
-            //$cart->update(['status' => 'paid']);
+            // Add order items from cart
+//            $order->items()->create([
+//                'food_id' => $cart->food_id,
+//                'quantity' => $cart->count,
+//                'price' => $cart->food->price
+//            ]);
+
+            $cart->delete();
 
             DB::commit();
 
             return new JsonResponse([
-                'message' => 'Payment successful',
+                'message' => 'Payment successful and order created',
+                'order_id' => $order->id,
                 'total_paid' => $total
             ]);
         } catch (\Exception $e) {
@@ -163,6 +136,5 @@ class CartController extends Controller
             return new JsonResponse(['message' => 'Payment failed: ' . $e->getMessage()], 400);
         }
     }
-
 
 }
