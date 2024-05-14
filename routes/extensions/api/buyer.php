@@ -19,6 +19,7 @@ Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function
 
     //region authenticated
     Route::middleware('auth:buyer')->group(function () {
+
         Route::prefix('addresses')
             ->name('addresses.')
             ->controller(AddressController::class)
@@ -39,8 +40,16 @@ Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function
         Route::get('/restaurants/{restaurant}/foods', [RestaurantController::class, 'getFoods'])->name('restaurant.foods');
 
         //cart
-        Route::post('/carts/add', [CartController::class, 'addToCart'])->name('carts.add');
-        Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
+        Route::prefix('carts')
+            ->name('carts.')
+            ->controller(CartController::class)
+            ->group(function (){
+                Route::post('/add',  'addToCart')->name('add');
+                Route::get('/',  'index')->name('index');
+                Route::patch('/update', 'updateCart')->name('update');
+                Route::get('/{cart}', 'show')->name('show');
+                Route::post('/{cart}/pay', 'pay')->name('pay');
+            });
 
     });
     //endregion
