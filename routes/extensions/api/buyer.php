@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Buyer\AddressController;
 use App\Http\Controllers\Buyer\AuthController;
+use App\Http\Controllers\Buyer\CartController;
 use App\Http\Controllers\Buyer\RestaurantController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,7 +38,9 @@ Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function
 
         Route::get('/restaurants/{restaurant}/foods', [RestaurantController::class, 'getFoods'])->name('restaurant.foods');
 
-
+        //cart
+        Route::post('/carts/add', [CartController::class, 'addToCart'])->name('carts.add');
+        Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
 
     });
     //endregion
