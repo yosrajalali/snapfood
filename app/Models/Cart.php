@@ -32,4 +32,8 @@ class Cart extends Model
     {
         return $this->food->restaurant();
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

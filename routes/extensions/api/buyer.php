@@ -4,6 +4,7 @@
 use App\Http\Controllers\Buyer\AddressController;
 use App\Http\Controllers\Buyer\AuthController;
 use App\Http\Controllers\Buyer\CartController;
+use App\Http\Controllers\Buyer\CommentController;
 use App\Http\Controllers\Buyer\RestaurantController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +51,9 @@ Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function
                 Route::get('/{cart}', 'show')->name('show');
                 Route::post('/{cart}/pay', 'pay')->name('pay');
             });
+
+        Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
 
     });
     //endregion
