@@ -9,6 +9,7 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\GetCartResource;
+use App\Mail\OrderCreatedMail;
 use App\Models\Cart;
 use App\Models\Comment;
 use App\Models\Food;
@@ -18,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -111,19 +113,15 @@ class CartController extends Controller
             $order = new Order([
                 'buyer_id' => $cart->buyer_id,
                 'restaurant_id' => $cart->food->restaurant->id,
+                'food_id' => $cart->food_id,
                 'total_price' => $total,
                 'status_id' => 1,
             ]);
             $order->save();
 
-            // Add order items from cart
-//            $order->items()->create([
-//                'food_id' => $cart->food_id,
-//                'quantity' => $cart->count,
-//                'price' => $cart->food->price
-//            ]);
-
             $cart->delete();
+
+            Mail::to($cart->buyer->email)->send(new OrderCreatedMail($order));
 
             DB::commit();
 

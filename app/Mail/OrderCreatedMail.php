@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OrderStatusChangedMail extends Mailable implements ShouldQueue
+class OrderCreatedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -34,8 +34,8 @@ class OrderStatusChangedMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('seller.email.order_status_changed')
-            ->subject('Order Status Updated')
+        return $this->view('buyer.email.order_created')
+            ->subject('successful payment')
             ->with([
                 'order' => $this->order,
             ]);
@@ -47,7 +47,7 @@ class OrderStatusChangedMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Status Changed Mail',
+            subject: 'Order Created Mail',
         );
     }
 
