@@ -60,19 +60,16 @@
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                             <form action="{{ route('seller.orders.updateStatus', $order->id) }}" method="POST">
                                 @csrf
-                                <select name="status_id" onchange="this.form.submit()" class="text-sm">
+                                <select name="status_id" class="text-sm">
                                     @foreach ($statuses as $status)
-                                        <option value="{{ $status->id }}"
-                                                class="{{ $status->name == 'در حال بررسی' ? 'text-red-500' :
-                                             ($status->name == 'در حال آماده سازی' ? 'text-orange-800' :
-                                             ($status->name == 'ارسال به مقصد' ? 'text-blue-500' :
-                                             ($status->name == 'تحویل گرفته شد' ? 'text-green-500' : 'text-gray-500'))) }}"
-                                            {{ $order->status_id == $status->id ? 'selected' : '' }}>
+                                        <option value="{{ $status->id }}" {{ $order->status_id == $status->id ? 'selected' : '' }}>
                                             {{ $status->name }}
                                         </option>
                                     @endforeach
                                 </select>
+                                <button type="submit" class="mt-2">ثبت وضعیت</button>
                             </form>
+
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                             {{ $order->created_at->format('Y/m/d') }}

@@ -15,18 +15,19 @@ use App\Models\Food;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
 
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $carts = Cart::where('buyer_id', Auth::id())->with('food.restaurant')->get();
         return CartResource::collection($carts);
     }
-    public function addToCart(AddToCartRequest $request)
+    public function addToCart(AddToCartRequest $request): JsonResponse
     {
         $buyer = Auth::user();
 
@@ -51,7 +52,7 @@ class CartController extends Controller
         ]);
     }
 
-    public function updateCart(UpdateCartRequest $request)
+    public function updateCart(UpdateCartRequest $request): JsonResponse
     {
         $buyer = Auth::user();
 
@@ -73,7 +74,7 @@ class CartController extends Controller
         ]);
     }
 
-    public function show(Request $request, $cartId)
+    public function show(Request $request, $cartId): JsonResponse|GetCartResource
     {
         $buyer = Auth::guard('buyer')->user();
 
@@ -89,9 +90,9 @@ class CartController extends Controller
     }
 
 
-    public function pay(PayCartRequest $request, $cartId)
+    public function pay(PayCartRequest $request, $cartId): JsonResponse
     {
-        $cart = Cart::with('food.restaurant')->find($cartId); // Ensure the food relationship loads the restaurant as well
+        $cart = Cart::with('food.restaurant')->find($cartId);
 
         if (!$cart || $cart->buyer_id != Auth::id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
