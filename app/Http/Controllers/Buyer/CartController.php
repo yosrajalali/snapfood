@@ -100,9 +100,16 @@ class CartController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
+        if ($cart->status === 'paid') {
+            return response()->json(['message' => 'This cart has already been paid for.'], 422);
+        }
+
         DB::beginTransaction();
         try {
-            $total = $cart->count * $cart->food->price;
+//            $total = $cart->count * $cart->food->price;
+
+            $discount = $cart->food->discount ? (1 - ($cart->food->discount->percentage / 100)) : 1;
+            $total = $cart->count * $cart->food->price * $discount;
 
             $paymentSuccessful = true;
 
@@ -111,15 +118,14 @@ class CartController extends Controller
             }
 
             $order = new Order([
-                'buyer_id' => $cart->buyer_id,
+                'cart_id' => $cart->id,
                 'restaurant_id' => $cart->food->restaurant->id,
-                'food_id' => $cart->food_id,
                 'total_price' => $total,
                 'status_id' => 1,
             ]);
             $order->save();
 
-            $cart->delete();
+            $cart->update(['status' => 'paid']);
 
             Mail::to($cart->buyer->email)->send(new OrderCreatedMail($order));
 
@@ -137,3 +143,4 @@ class CartController extends Controller
     }
 
 }
+

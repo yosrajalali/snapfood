@@ -37,6 +37,12 @@
                     <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         شماره سفارش
                     </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
+                        نام غذا
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
+                        تعداد
+                    </th>
                     <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         مجموع هزینه
                     </th>
@@ -53,6 +59,12 @@
                     <tr>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                             {{ $order->id }}
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                            {{ $order->cart->food->name ?? 'N/A' }}
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                            {{ $order->cart->count ?? 'N/A' }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                             {{ number_format($order->total_price, 2) }} تومان
@@ -76,7 +88,6 @@
                         </td>
                     </tr>
                 @endforeach
-
 
                 </tbody>
             </table>

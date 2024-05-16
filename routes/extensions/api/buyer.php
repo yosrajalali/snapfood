@@ -53,6 +53,7 @@ Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function
             });
 
         Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+        Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
 
 
     });

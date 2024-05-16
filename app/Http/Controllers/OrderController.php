@@ -13,12 +13,17 @@ class OrderController extends Controller
 {
     public function updateOrderStatus(Request $request, $orderId)
     {
-        $order = Order::with(['buyer', 'status'])->findOrFail($orderId);
+        $order = Order::with(['cart.buyer', 'status'])->findOrFail($orderId);
 
         $order->status_id = $request->status_id;
         $order->save();
 
-        Mail::to($order->buyer->email)->queue(new OrderStatusChangedMail($order));
+        // Check if the order has a cart and that cart has a buyer
+        if (!$order->cart || !$order->cart->buyer) {
+            return redirect()->back()->with('error', 'No associated buyer found for this order.');
+        }
+
+        Mail::to($order->cart->buyer->email)->queue(new OrderStatusChangedMail($order));
         return redirect()->back()->with('success', __('response.status_order.update'));
     }
 

@@ -10,7 +10,7 @@ class Cart extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['buyer_id', 'food_id', 'count'];
+    protected $fillable = ['buyer_id', 'food_id', 'count', 'status'];
 
     public function buyer()
     {
