@@ -25,16 +25,17 @@ class SellerController extends Controller
 
     public function dashboard()
     {
-        $threeDaysAgo = Carbon::now()->subDays(10);
+        $xDaysAgo = Carbon::now()->subDays(10);
         $deliveredStatusId = OrderStatus::where('name', 'تحویل گرفته شد')->first()->id;
 
         $seller = Auth::user();
         $restaurantId = $seller->restaurant->id;
 
-        $recentOrders = Order::where('created_at', '>=', $threeDaysAgo)
+        $recentOrders = Order::where('created_at', '>=', $xDaysAgo)
             ->where('restaurant_id', $restaurantId)
             ->where('status_id', '!=', $deliveredStatusId)
             ->latest()
+            ->with(['cart.foods'])
             ->paginate(7);
         $statuses = OrderStatus::all();
 

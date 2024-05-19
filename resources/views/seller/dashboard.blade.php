@@ -61,10 +61,14 @@
                             {{ $order->id }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                            {{ $order->cart->food->name ?? 'N/A' }}
+                            @foreach ($order->cart->foods as $food)
+                                <div>{{ $food->name }}</div>
+                            @endforeach
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                            {{ $order->cart->count ?? 'N/A' }}
+                            @foreach ($order->cart->foods as $food)
+                                <div>{{ $food->pivot->count }}</div>
+                            @endforeach
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                             {{ number_format($order->total_price, 2) }} تومان

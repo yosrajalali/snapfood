@@ -37,14 +37,25 @@ class RestaurantController extends Controller
             $query->where('type', $request->type);
         }
 
-        $restaurants = $query->get();
+        $restaurants = $query->paginate(10);
 
         return RestaurantListingResource::collection($restaurants);
     }
 
     public function getFoods(Restaurant $restaurant)
     {
-        $categories = FoodCategory::with('foods')->get();
+        $categories = FoodCategory::whereHas('foods', function ($query) use ($restaurant) {
+            $query->where('restaurant_id', $restaurant->id);
+        })->with(['foods' => function ($query) use ($restaurant) {
+            $query->where('restaurant_id', $restaurant->id);
+        }])->get();
+
+
+        if ($categories->isEmpty()) {
+            return response()->json(['message' => 'This restaurant does not have any food'], 404);
+        }
+
         return FoodCategoryResource::collection($categories);
     }
+
 }

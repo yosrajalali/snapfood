@@ -24,22 +24,20 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse|RedirectResponse
     {
         $user = User::where('email', $request->email)->first();
-        $guard = 'admin'; // Assuming 'admin' is the default guard for Users
+        $guard = 'admin';
 
-        // If no user found, check Sellers
         if (!$user) {
             $user = Seller::where('email', $request->email)->first();
-            $guard = 'seller'; // Change this as per your guard configuration
+            $guard = 'seller';
         }
 
-        // Check if we have a user and the password is correct
+
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::guard($guard)->login($user);
             $request->session()->regenerate();
             return redirect()->route('home')->with('success', __('response.login.success'));
         }
 
-        // If authentication fails, return back with an error
         return back()->withErrors(['error' => __('response.login.failed')]);
     }
 

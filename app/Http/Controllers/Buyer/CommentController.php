@@ -19,7 +19,7 @@ class CommentController extends Controller
         $cart = Cart::findOrFail($request->cart_id);
 
         if ($buyer->id !== $cart->buyer_id || $cart->status !== 'paid') {
-            return response()->json(['message' => 'Unauthorized or cart not eligible for commenting'], 403);
+            return response()->json(['message' => __('response.cart_unauthorized')], 403);
         }
 
         Comment::create([
@@ -29,7 +29,7 @@ class CommentController extends Controller
             'score' => $request->score,
         ]);
 
-        return response()->json(['msg' => 'comment created successfully']);
+        return response()->json(['msg' =>  __('response.comment.created')]);
     }
 
     public function index(Request $request)
@@ -39,8 +39,8 @@ class CommentController extends Controller
         $comments = Comment::whereHas('cart', function ($query) use ($buyerId) {
             $query->where('buyer_id', $buyerId)
                 ->where('status', 'paid');
-        })->with('cart.food')
-        ->get();
+        })->with('cart.foods')
+            ->paginate(10);
 
         return CommentResource::collection($comments);
     }

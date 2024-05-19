@@ -16,16 +16,30 @@ class GetCartResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'food_id' => $this->food_id,
-            'count' => $this->count,
-            'food_name' => $this->food->name, // Ensure there is a relationship defined in the Cart model to Food
-            'restaurant' => [
-                'name' => $this->food->restaurant->name, // Ensure Food model has relationship to Restaurant
-                'image' => $this->food->restaurant->image
-            ],
-            'price' => $this->food->price,
+            'buyer_id' => $this->buyer_id,
+            'status' => $this->status,
+            'foods' => $this->foods->map(function ($food) {
+                return [
+                    'id' => $food->id,
+                    'name' => $food->name,
+                    'price' => $food->price,
+                    'count' => $food->pivot->count,
+                    'restaurant' => [
+                        'id' => $food->restaurant->id ?? null,
+                        'name' => $food->restaurant->name ?? 'N/A',
+                        'image' => $food->restaurant->image ? url($this->food->restaurant->image) : null,
+                    ],
+                ];
+            }),
+            'total_price' => $this->foods->sum(function ($food) {
+                $price = $food->price;
+                if ($food->discount) {
+                    $price = $price * (1 - $food->discount->percentage / 100);
+                }
+                return $price * $food->pivot->count;
+            }),
             'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString()
+            'updated_at' => $this->updated_at->toDateTimeString(),
         ];
     }
 }

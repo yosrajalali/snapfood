@@ -26,61 +26,87 @@ class CartController extends Controller
 
     public function index(Request $request): AnonymousResourceCollection
     {
-        $carts = Cart::where('buyer_id', Auth::id())->with('food.restaurant')->get();
+        $carts = Cart::where('buyer_id', Auth::id())
+            ->with('foods.restaurant')
+            ->paginate(10);
+
         return CartResource::collection($carts);
     }
+
     public function addToCart(AddToCartRequest $request): JsonResponse
     {
         $buyer = Auth::user();
 
-        $cart = Cart::where('buyer_id', $buyer->id)->where('food_id', $request->food_id)->first();
+        $food = Food::findOrFail($request->food_id);
+        $restaurantId = $food->restaurant_id;
+
+        $cart = Cart::where('buyer_id', $buyer->id)
+            ->where('restaurant_id', $restaurantId)
+            ->where('status', 'unpaid')
+            ->first();
 
         if ($cart) {
-
-            $cart->count += $request->count;
-            $cart->save();
+            $cartFood = $cart->foods()->where('food_id', $request->food_id)->first();
+            if ($cartFood) {
+                $cartFood->pivot->count += $request->count;
+                $cartFood->pivot->save();
+            } else {
+                $cart->foods()->attach($request->food_id, ['count' => $request->count]);
+            }
         } else {
-
             $cart = Cart::create([
                 'buyer_id' => $buyer->id,
-                'food_id' => $request->food_id,
-                'count' => $request->count
+                'restaurant_id' => $restaurantId,
+                'status' => 'unpaid'
             ]);
+
+
+            $cart->foods()->attach($request->food_id, ['count' => $request->count]);
         }
 
         return response()->json([
-            'msg' => 'food added to cart successfully',
-            'cart_id' => $cart->id
-        ]);
+            'msg' => __('response.cart.food_added'),
+            'data' => new CartResource($cart)
+        ],200);
     }
 
-    public function updateCart(UpdateCartRequest $request): JsonResponse
+    public function updateCart(UpdateCartRequest $request, $cartId): JsonResponse
     {
         $buyer = Auth::user();
-
-        $cart = Cart::where('buyer_id', $buyer->id)
-            ->where('food_id', $request->food_id)
-            ->first();
+        $cart = Cart::where('id', $cartId)->where('buyer_id', $buyer->id)->first();
 
         if (!$cart) {
-            return response()->json(['msg' => 'Cart item does not exist'], 404);
+            return response()->json(['msg' => __('response.cart.not_exist')], 404);
         }
 
-        $cart->update([
+        if ($cart->status === 'paid') {
+            return response()->json(['msg' => __('response.cart.paid_error')]);
+        }
+
+        $food = $cart->foods()->where('food_id', $request->food_id)->first();
+
+        if (!$food) {
+            return response()->json(['msg' => __('response.cart.food_not_exist')], 404);
+        }
+
+        $cart->foods()->updateExistingPivot($request->food_id, [
             'count' => $request->count
         ]);
 
+
         return response()->json([
-            'msg' => 'Cart updated successfully',
-            'cart_id' => $cart->id
-        ]);
+            'message' => __('response.cart.update'),
+            'data' => new CartResource($cart)
+        ], 200);
     }
+
 
     public function show(Request $request, $cartId): JsonResponse|GetCartResource
     {
         $buyer = Auth::guard('buyer')->user();
 
-        $cart = Cart::where('id', $cartId)
+        $cart = Cart::with('foods.restaurant')
+        ->where('id', $cartId)
             ->where('buyer_id', $buyer->id)
             ->first();
 
@@ -91,25 +117,25 @@ class CartController extends Controller
         return new GetCartResource($cart);
     }
 
-
     public function pay(PayCartRequest $request, $cartId): JsonResponse
     {
-        $cart = Cart::with('food.restaurant')->find($cartId);
+        $cart = Cart::with('foods.restaurant', 'foods.discount')->find($cartId);
 
         if (!$cart || $cart->buyer_id != Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return response()->json(['message' => __('response.cart_unauthorized')], 403);
         }
 
         if ($cart->status === 'paid') {
-            return response()->json(['message' => 'This cart has already been paid for.'], 422);
+            return response()->json(['message' => __('response.cart.paid_error')], 422);
         }
 
         DB::beginTransaction();
         try {
-//            $total = $cart->count * $cart->food->price;
-
-            $discount = $cart->food->discount ? (1 - ($cart->food->discount->percentage / 100)) : 1;
-            $total = $cart->count * $cart->food->price * $discount;
+            $total = 0;
+            foreach ($cart->foods as $food) {
+                $discount = $food->discount ? (1 - ($food->discount->percentage / 100)) : 1;
+                $total += $food->pivot->count * $food->price * $discount;
+            }
 
             $paymentSuccessful = true;
 
@@ -119,7 +145,7 @@ class CartController extends Controller
 
             $order = new Order([
                 'cart_id' => $cart->id,
-                'restaurant_id' => $cart->food->restaurant->id,
+                'restaurant_id' => $cart->restaurant->id,
                 'total_price' => $total,
                 'status_id' => 1,
             ]);
@@ -132,7 +158,7 @@ class CartController extends Controller
             DB::commit();
 
             return new JsonResponse([
-                'message' => 'Payment successful and order created',
+                'message' => __('response.cart.successful_payment'),
                 'order_id' => $order->id,
                 'total_paid' => $total
             ]);
@@ -141,6 +167,7 @@ class CartController extends Controller
             return new JsonResponse(['message' => 'Payment failed: ' . $e->getMessage()], 400);
         }
     }
+
 
 }
 

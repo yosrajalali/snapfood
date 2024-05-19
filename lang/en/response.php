@@ -19,5 +19,13 @@ return [
     'buyer.register' => 'ثبت نام شما با موفقیت انجام شد.',
     'buyer.set_current_address'=> 'آدرس فعلی شما با موفقیت به روز رسانی شد.',
     'buyer.address_added'=> 'آدرس با موفقیت اضافه شد.',
+    'cart.update' => 'سبد خرید به روز رسانی شد.',
+    'cart.food_added'=>'غذا با موفقیت به سبد خرید اضافه شد.',
+    'cart.not_exist'=>'کارت وجود ندارد.',
+    'cart.paid_error'=>'این کارت قبلا پرداخت شده است.',
+    'cart.food_not_exist'=> 'این غذا در کارت شما وجود ندارد.',
+    'cart.successful_payment' => 'پرداخت با موفقیت انجام شد و سفارش شما ایجاد شد.',
+    'cart_unauthorized' => 'شما به این سبد خرید دسترسی ندارید.',
+    'comment.created'=> 'نظر شما با موفقیت ثبت شد.',
 ];
 

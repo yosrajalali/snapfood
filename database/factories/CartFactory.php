@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Buyer;
 use App\Models\Cart;
 use App\Models\Food;
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,8 +22,7 @@ class CartFactory extends Factory
     {
         return [
             'buyer_id' => Buyer::query()->inRandomOrder()->first()->id,
-            'food_id' => Food::query()->inRandomOrder()->first()->id,
-            'count' => $this->faker->numberBetween(1, 10)
+            'restaurant_id' => Restaurant::query()->inRandomOrder()->first()->id,
         ];
     }
 }

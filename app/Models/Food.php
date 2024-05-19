@@ -26,10 +26,9 @@ class Food extends Model
         return $this->belongsTo(Discount::class);
     }
 
-//    public function carts()
-//    {
-//        return $this->belongsToMany(Cart::class, 'cart_food')
-//            ->withPivot('count')
-//            ->withTimestamps();
-//    }
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class)->withPivot('count');
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginBuyerRequest;
 use App\Http\Requests\RegisterBuyerRequest;
 use App\Http\Requests\UpdateBuyerProfileRequest;
+use App\Http\Resources\BuyerResource;
 use App\Models\Buyer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -66,6 +67,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => __('response.buyer.update_profile'),
+            'data' => new BuyerResource($user),
         ]);
     }
 

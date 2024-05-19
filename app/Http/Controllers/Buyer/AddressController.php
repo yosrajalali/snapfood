@@ -16,7 +16,7 @@ class AddressController extends Controller
     {
         $buyerId = Auth::id();
 
-        $addresses = Address::where('buyer_id', $buyerId)->get();
+        $addresses = Address::where('buyer_id', $buyerId)->paginate(10);
 
         return AddressResource::collection($addresses);
     }
@@ -27,7 +27,10 @@ class AddressController extends Controller
 
         $address = $buyer->addresses()->create($request->validated());
 
-        return response()->json(['msg' => __('response.buyer.address_added')], 201);
+        return response()->json([
+            'msg' => __('response.buyer.address_added'),
+            'data'=> new AddressResource($address),
+        ], 201);
     }
 
     public function setCurrent(Request $request, Address $address): JsonResponse
@@ -39,11 +42,14 @@ class AddressController extends Controller
 
         Address::where('buyer_id', Auth::id())->update(['is_current' => false]);
 
-        // Set the current address
+
         $address->is_current = true;
         $address->save();
 
-        return response()->json(['msg' => __('response.buyer.set_current_address')]);
+        return response()->json([
+            'msg' => __('response.buyer.set_current_address'),
+            'data'=> new AddressResource($address),
+        ]);
     }
 
 }

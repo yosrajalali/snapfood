@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('buyer_id')->constrained()->onDelete('cascade');
-            $table->foreignId('food_id')->constrained('food')->onDelete('cascade');
-            $table->integer('count')->default(0);
+            $table->foreignId('restaurant_id')->constrained('restaurants')->onDelete('cascade');
             $table->string('status')->default('unpaid');
             $table->timestamps();
             $table->softDeletes();

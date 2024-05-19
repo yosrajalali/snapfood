@@ -16,22 +16,13 @@ class CommentResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'cart_id' => $this->cart_id,
+            'buyer_id' => $this->buyer_id,
             'comment' => $this->comment,
             'score' => $this->score,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
-            'cart' => [
-                'id' => $this->cart->id,
-                'count' => $this->cart->count,
-                'status' => $this->cart->status,
-                'food' => [
-                    'id' => $this->cart->food->id,
-                    'name' => $this->cart->food->name,
-                    'ingredients' => $this->cart->food->ingredients,
-                    'price' => $this->cart->food->price,
-                    'image' => url($this->cart->food->image),
-                ]
-            ]
+            'cart' => new CartResource($this->whenLoaded('cart')),
         ];
     }
 }

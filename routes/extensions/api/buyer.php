@@ -37,7 +37,6 @@ Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function
         //restaurant
         Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants.index');
         Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show'])->name('restaurants.show');
-
         Route::get('/restaurants/{restaurant}/foods', [RestaurantController::class, 'getFoods'])->name('restaurant.foods');
 
         //cart
@@ -47,7 +46,7 @@ Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function
             ->group(function (){
                 Route::post('/add',  'addToCart')->name('add');
                 Route::get('/',  'index')->name('index');
-                Route::patch('/update', 'updateCart')->name('update');
+                Route::patch('/{cart}/update', 'updateCart')->name('update');
                 Route::get('/{cart}', 'show')->name('show');
                 Route::post('/{cart}/pay', 'pay')->name('pay');
             });
