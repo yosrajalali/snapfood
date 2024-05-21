@@ -18,17 +18,32 @@ class CommentController extends Controller
     {
         $buyerId = Auth::id();
 
-        $comments = Comment::whereHas('cart', function ($query) use ($buyerId) {
+        $query = Comment::whereHas('cart', function ($query) use ($buyerId) {
             $query->where('buyer_id', $buyerId)
                 ->where('status', 'paid');
         })
             ->where('status', 'approved')
-            ->with('cart.foods')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->with('cart.foods.restaurant');
+
+        if ($request->has('food_id')) {
+            $foodId = $request->input('food_id');
+            $query->whereHas('cart.foods', function ($query) use ($foodId) {
+                $query->where('food_id', $foodId);
+            });
+        }
+
+        if ($request->has('restaurant_id')) {
+            $restaurantId = $request->input('restaurant_id');
+            $query->whereHas('cart.foods.restaurant', function ($query) use ($restaurantId) {
+                $query->where('id', $restaurantId);
+            });
+        }
+
+        $comments = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return CommentResource::collection($comments);
     }
+
 
     public function store(StoreCommentRequest $request): JsonResponse
     {
