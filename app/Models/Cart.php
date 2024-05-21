@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cart extends Model
@@ -12,23 +15,20 @@ class Cart extends Model
 
     protected $fillable = ['buyer_id', 'restaurant_id', 'status'];
 
-    public function buyer()
+    public function buyer(): BelongsTo
     {
         return $this->belongsTo(Buyer::class, 'buyer_id');
     }
-
-
-    public function foods()
+    public function foods(): BelongsToMany
     {
         return $this->belongsToMany(Food::class)->withPivot('count');
     }
 
-
-    public function restaurant()
+    public function restaurant(): BelongsTo
     {
         return $this->belongsTo(Restaurant::class);
     }
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }

@@ -20,6 +20,7 @@ class CommentResource extends JsonResource
             'buyer_id' => $this->buyer_id,
             'comment' => $this->comment,
             'score' => $this->score,
+            'status' => $this->status,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
             'cart' => new CartResource($this->whenLoaded('cart')),

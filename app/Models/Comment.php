@@ -9,7 +9,14 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cart_id', 'buyer_id', 'comment', 'score'];
+    protected $fillable = [
+        'cart_id',
+        'buyer_id',
+        'comment',
+        'score',
+        'status',
+        'response'
+    ];
 
     public function cart()
     {

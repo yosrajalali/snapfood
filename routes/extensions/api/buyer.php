@@ -52,7 +52,12 @@ Route::prefix('buyer')->name('buyer.')->middleware('force.json')->group(function
             });
 
         Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
-        Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
+//        Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
+
+        Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
+        Route::post('comments/{comment}/approve', [CommentController::class, 'approve'])->name('comments.approve');
+        Route::post('comments/{comment}/request-deletion', [CommentController::class, 'requestDeletion'])->name('comments.requestDeletion');
+        Route::post('comments/{comment}/respond', [CommentController::class, 'respond'])->name('comments.respond');
 
 
     });
