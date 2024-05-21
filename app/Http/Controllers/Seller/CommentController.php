@@ -37,5 +37,14 @@ class CommentController extends Controller
         return view('seller.comments.index', compact('comments', 'restaurant'));
     }
 
+    public function approve($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->status = 'approved';
+        $comment->save();
+
+        return redirect()->back()->with('success', __('response.comment.approved'));
+    }
+
 
 }

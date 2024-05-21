@@ -27,5 +27,6 @@ return [
     'cart.successful_payment' => 'پرداخت با موفقیت انجام شد و سفارش شما ایجاد شد.',
     'cart_unauthorized' => 'شما به این سبد خرید دسترسی ندارید.',
     'comment.created'=> 'نظر شما با موفقیت ثبت شد.',
+    'comment.approved'=>'نظر تایید شد.'
 ];
 
