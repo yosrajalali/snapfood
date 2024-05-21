@@ -16,9 +16,19 @@
         </div>
     @endif
 
+    <!-- Dashboard Navigation -->
+    <div class="flex justify-around mt-8 mb-4 text-sm">
+        <a href="{{route('seller.dashboard')}}" class="bg-pink-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">سفارشات کنونی</a>
+        <a href="{{route('seller.archived-orders')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">سفارشات آرشیو شده</a>
+        <a href="{{route('seller.foods.index')}}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">غذاها</a>
+        <a href="#" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">گزارش فروش</a>
+        <a href="{{route('seller.comments.index')}}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">نظرات</a>
+        <a href="{{ route('seller.index') }}" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">بازگشت به صفحه اصلی</a>
+
+    </div>
+
     <!-- Navigation -->
     <div class="flex justify-between mt-8 mb-4 text-sm">
-        <a href="{{ route('seller.dashboard') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">بازگشت به داشبورد</a>
         <form action="{{ route('seller.comments.index') }}" method="GET" class="flex items-center bg-white p-4 rounded shadow-md">
             <label for="food_id" class="mr-2 text-gray-700 font-semibold">فیلتر بر اساس غذا:</label>
             <select name="food_id" id="food_id" class="text-sm border-gray-300 rounded p-2 focus:ring focus:ring-green-200 focus:border-green-500">

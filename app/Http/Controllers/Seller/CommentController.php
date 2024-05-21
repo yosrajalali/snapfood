@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Restaurant;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View|RedirectResponse
     {
         $sellerId = Auth::id();
         $restaurant = Restaurant::where('seller_id', $sellerId)->first();
@@ -37,13 +41,22 @@ class CommentController extends Controller
         return view('seller.comments.index', compact('comments', 'restaurant'));
     }
 
-    public function approve($id)
+    public function approve($id): RedirectResponse
     {
         $comment = Comment::findOrFail($id);
         $comment->status = 'approved';
         $comment->save();
 
         return redirect()->back()->with('success', __('response.comment.approved'));
+    }
+
+    public function deleteRequest($id): RedirectResponse
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->status = 'delete_requested';
+        $comment->save();
+
+        return redirect()->back()->with('success', 'درخواست حذف ارسال شد.');
     }
 
 
