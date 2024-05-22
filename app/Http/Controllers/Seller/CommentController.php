@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CommentResponseRequest;
 use App\Models\Comment;
 use App\Models\Restaurant;
 use Illuminate\Contracts\View\Factory;
@@ -53,10 +54,28 @@ class CommentController extends Controller
     public function deleteRequest($id): RedirectResponse
     {
         $comment = Comment::findOrFail($id);
-        $comment->status = 'delete_requested';
+        $comment->status = 'request_deletion';
         $comment->save();
 
-        return redirect()->back()->with('success', 'درخواست حذف ارسال شد.');
+        return redirect()->back()->with('success', __('response.comment.delete_request'));
+    }
+
+    public function response(CommentResponseRequest $request, $id): RedirectResponse
+    {
+        $comment = Comment::findOrFail($id);
+
+        if ($comment->status === 'pending' || $comment->status === 'request_deletion') {
+            return redirect()->back()->with('error', __('response.response.approve_needed'));
+        }
+
+        if ($comment->response && !$request->has('confirm')) {
+            return redirect()->back()->with('warning', __('response.response_confirm'))->withInput()->with('comment_id', $comment->id);
+        }
+
+        $comment->response = $request->validated()['response'];
+        $comment->save();
+
+        return redirect()->back()->with('success', __('response.response_send'));
     }
 
 

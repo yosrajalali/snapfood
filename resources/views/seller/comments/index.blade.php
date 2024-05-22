@@ -16,6 +16,24 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if (session('warning'))
+        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mt-5" role="alert">
+            {{ session('warning') }}
+            <form action="{{ route('seller.comments.response', session('comment_id')) }}" method="POST">
+                @csrf
+                <textarea name="response" rows="2" class="w-full mt-2 p-2 border rounded focus:ring focus:ring-blue-200 focus:border-blue-500">{{ old('response') }}</textarea>
+                <input type="hidden" name="confirm" value="1">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 transition duration-300 ease-in-out">ارسال پاسخ دوباره</button>
+            </form>
+        </div>
+    @endif
+
     <!-- Dashboard Navigation -->
     <div class="flex justify-around mt-8 mb-4 text-sm">
         <a href="{{route('seller.dashboard')}}" class="bg-pink-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">سفارشات کنونی</a>
@@ -24,7 +42,6 @@
         <a href="#" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">گزارش فروش</a>
         <a href="{{route('seller.comments.index')}}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">نظرات</a>
         <a href="{{ route('seller.index') }}" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded transition duration-300 ease-in-out">بازگشت به صفحه اصلی</a>
-
     </div>
 
     <!-- Navigation -->
@@ -109,7 +126,7 @@
                             {{ $comment->created_at->format('Y/m/d') }}
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                            @if($comment->status === 'pending')
+                            @if($comment->status === 'pending' || $comment->status === 'request_deletion')
                                 <form action="{{ route('seller.comments.approve', $comment->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
@@ -120,15 +137,13 @@
                             @endif
                             <form action="{{ route('seller.comments.deleteRequest', $comment->id) }}" method="POST" class="mt-2">
                                 @csrf
-                                @method('PATCH')
                                 <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
                                     درخواست حذف
                                 </button>
                             </form>
-                            <form action="{{ route('seller.comments.reply', $comment->id) }}" method="POST" class="mt-2">
+                            <form action="{{ route('seller.comments.response', $comment->id) }}" method="POST" class="mt-2">
                                 @csrf
-                                @method('PATCH')
-                                <textarea name="reply" rows="2" class="w-full mt-2 p-2 border rounded focus:ring focus:ring-blue-200 focus:border-blue-500"></textarea>
+                                <textarea name="response" rows="2" class="w-full mt-2 p-2 border rounded focus:ring focus:ring-blue-200 focus:border-blue-500">{{ old('response') }}</textarea>
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out mt-2">
                                     ارسال پاسخ
                                 </button>

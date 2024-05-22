@@ -37,7 +37,7 @@ Route::prefix('seller')->name('seller.')->group(function () {
         Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
         Route::patch('comments/{id}/approve', [CommentController::class, 'approve'])->name('comments.approve');
         Route::post('comments/{id}/deleteRequest', [CommentController::class, 'deleteRequest'])->name('comments.deleteRequest');
-        Route::post('comments/{id}/reply', [CommentController::class, 'reply'])->name('comments.reply');
+        Route::post('comments/{id}/response', [CommentController::class, 'response'])->name('comments.response');
     });
     // endregion
 });

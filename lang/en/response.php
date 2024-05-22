@@ -27,6 +27,10 @@ return [
     'cart.successful_payment' => 'پرداخت با موفقیت انجام شد و سفارش شما ایجاد شد.',
     'cart_unauthorized' => 'شما به این سبد خرید دسترسی ندارید.',
     'comment.created'=> 'نظر شما با موفقیت ثبت شد.',
-    'comment.approved'=>'نظر تایید شد.'
+    'comment.approved'=>'نظر تایید شد.',
+    'response.approve_needed'=> 'لطفا ابتدا نظر را تایید کنید.',
+    'comment.delete_request'=>'درخواست حذف ارسال شد.',
+    'response_confirm'=> 'شما قبلاً به این پیام پاسخ داده‌اید. آیا می‌خواهید دوباره پاسخ دهید؟(این پاسخ جایگزین پاسخ قبلی خواهد شد.)',
+    'response_send'=>'پاسخ ارسال شد.',
 ];
 
