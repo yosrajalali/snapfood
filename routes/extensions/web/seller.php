@@ -6,6 +6,7 @@ use App\Http\Controllers\Restaurant\RestaurantController;
 use App\Http\Controllers\Seller\AuthSellerController;
 use App\Http\Controllers\Seller\CommentController;
 use App\Http\Controllers\Seller\FoodController;
+use App\Http\Controllers\Seller\ReportController;
 use App\Http\Controllers\Seller\SellerController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,10 +35,15 @@ Route::prefix('seller')->name('seller.')->group(function () {
         Route::resource('foods', FoodController::class);
         Route::post('/foods/{id}/toggle-food-party', [FoodController::class, 'toggleFoodParty'])->name('foods.toggle-food-party');
 
+        //comments
         Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
         Route::patch('comments/{id}/approve', [CommentController::class, 'approve'])->name('comments.approve');
         Route::post('comments/{id}/deleteRequest', [CommentController::class, 'deleteRequest'])->name('comments.deleteRequest');
         Route::post('comments/{id}/response', [CommentController::class, 'response'])->name('comments.response');
+
+        //reports
+        Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/export', [ReportController::class, 'export'])->name('reports.export');
     });
     // endregion
 });
