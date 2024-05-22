@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'approved', 'request_deletion'])->default('pending');
             $table->text('response')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
