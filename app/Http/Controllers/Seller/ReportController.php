@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Exports\OrdersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Restaurant;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 
 class ReportController extends Controller
 {
@@ -42,4 +47,19 @@ class ReportController extends Controller
         return view('seller.reports.index', compact('orders', 'totalOrders', 'totalRevenue', 'startDate', 'endDate'));
     }
 
+    public function export(Request $request): BinaryFileResponse|RedirectResponse
+    {
+        $seller = Auth::guard('seller')->user();
+
+        $restaurant = Restaurant::where('seller_id', $seller->id)->first();
+
+        if (!$restaurant) {
+            return redirect()->back()->with('error', 'Restaurant not found for the current seller.');
+        }
+
+        return Excel::download(new OrdersExport($seller->id), 'orders.xlsx');
+    }
+
 }
+
+
