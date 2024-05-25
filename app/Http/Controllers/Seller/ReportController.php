@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Charts\OrdersChart;
 use App\Exports\OrdersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -44,7 +45,9 @@ class ReportController extends Controller
         $totalOrders = $orders->count();
         $totalRevenue = $orders->sum('total_price');
 
-        return view('seller.reports.index', compact('orders', 'totalOrders', 'totalRevenue', 'startDate', 'endDate'));
+        $chart = new OrdersChart($seller->id,$startDate, $endDate);
+
+        return view('seller.reports.index', compact('orders', 'totalOrders', 'totalRevenue', 'startDate', 'endDate', 'chart'));
     }
 
     public function export(Request $request): BinaryFileResponse|RedirectResponse

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>گزارشات فروشنده</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Include Chart.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-200">
 <div class="container mx-auto px-4 py-6">
@@ -61,6 +63,12 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-xl mb-4 font-semibold text-gray-700">نمودار سفارشات</h2>
+        <div>{!! $chart->container() !!}</div>
+        {!! $chart->script() !!}
     </div>
 
     <div class="mt-5">
