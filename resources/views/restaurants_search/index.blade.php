@@ -72,6 +72,25 @@
             document.getElementById('longitude').value = latLng.lng;
         });
 
+        fetchCities();
+
+        async function fetchCities() {
+            try {
+                const response = await fetch('https://iran-locations-api.ir/api/v1/fa/cities');
+                const data = await response.json();
+                const citySelect = document.getElementById('city');
+                data.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city.name;
+                    option.setAttribute('data-lat', city.latitude);
+                    option.setAttribute('data-lon', city.longitude);
+                    option.textContent = city.name;
+                    citySelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching cities:', error);
+            }
+        }
     });
 </script>
 </body>
