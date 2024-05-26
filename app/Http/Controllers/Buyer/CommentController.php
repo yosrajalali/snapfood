@@ -19,8 +19,9 @@ class CommentController extends Controller
         $buyerId = Auth::id();
 
         $query = Comment::whereHas('cart', function ($query) use ($buyerId) {
-            $query->where('buyer_id', $buyerId)
+            $query
                 ->where('status', 'paid');
+               // ->where('buyer_id', $buyerId);
         })
             ->where('status', 'approved')
             ->with('cart.foods.restaurant');

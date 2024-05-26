@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RestaurantSearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/search-restaurants', [RestaurantSearchController::class, 'index']);
+Route::post('/search-restaurants', [RestaurantSearchController::class, 'search'])->name('search-restaurants');
 
 require_once __DIR__ . '/extensions/base.php';
 

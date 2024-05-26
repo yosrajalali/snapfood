@@ -15,15 +15,18 @@ class CommentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'cart_id' => $this->cart_id,
-            'buyer_id' => $this->buyer_id,
+//            'id' => $this->id,
+//            'cart_id' => $this->cart_id,
+//            'buyer_id' => $this->buyer_id,
+            'name' => $this->buyer->name,
             'comment' => $this->comment,
+            'answer'=> $this->response,
             'score' => $this->score,
-            'status' => $this->status,
+//            'status' => $this->status,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
-            'cart' => new CartResource($this->whenLoaded('cart')),
+            'foods' => $this->cart->foods->pluck('name')->toArray(),
+//            'cart' => new CartResource($this->whenLoaded('cart')),
         ];
     }
 }
