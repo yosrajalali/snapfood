@@ -23,6 +23,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::patch('/{comment}/approve', 'approve')->name('approve');
             Route::delete('/{comment}', 'destroy')->name('destroy');
+            Route::get('/{comment}/edit', 'edit')->name('edit');
+            Route::patch('/{comment}', 'update')->name('update');
         });
     });
     // endregion

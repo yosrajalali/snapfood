@@ -44,4 +44,18 @@ class CommentController extends Controller
 
         return redirect()->back()->with('success', 'نظر حذف شد.');
     }
+
+    public function edit($id)
+    {
+        $comment = Comment::findOrFail($id);
+        return view('admin.comments.edit', compact('comment'));
+    }
+
+    public function update(Request $request, $id): RedirectResponse
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->update($request->all());
+
+        return redirect()->route('admin.comments.index')->with('success', __('response.admin_update_comment'));
+    }
 }

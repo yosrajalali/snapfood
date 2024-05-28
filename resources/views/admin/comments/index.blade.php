@@ -43,11 +43,14 @@
             <tbody class="bg-white divide-y divide-gray-200">
             @foreach ($comments as $comment)
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{{ $comment->id }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $comment->id }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $comment->cart_id }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $comment->comment }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $comment->created_at->format('Y/m/d') }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <a href="{{ route('admin.comments.edit', $comment->id) }}" class="text-blue-600 hover:text-blue-900 bg-blue-100 hover:bg-blue-200 rounded-full px-3 py-1 font-bold transition duration-300 ease-in-out">
+                            ویرایش
+                        </a>
                         <form action="{{ route('admin.comments.approve', $comment->id) }}" method="POST" class="inline">
                             @csrf
                             @method('PATCH')
@@ -71,6 +74,5 @@
         <div class="py-4">
             {{ $comments->links() }}
         </div>
-
     </div>
 @endsection
