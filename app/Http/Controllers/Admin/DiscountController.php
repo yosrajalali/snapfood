@@ -9,11 +9,19 @@ use Illuminate\Http\Request;
 
 class DiscountController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $discounts = Discount::paginate(5);
+        $query = Discount::query();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+
+        $discounts = $query->paginate(5);
+
         return view('admin.discounts.index', compact('discounts'));
     }
+
 
     public function create()
     {

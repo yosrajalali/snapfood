@@ -1,52 +1,65 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدیریت تخفیف‌ها</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100">
-<div class="container mx-auto px-4 py-6">
-    <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-center mb-6 flex-grow">مدیریت تخفیف‌ها</h1>
-        <a href="{{ route('admin.dashboard') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            داشبورد مدیریت
-        </a>
-    </div>
+@extends('layouts.app')
 
-    @if (session('success'))
-        <div class="border border-t-0 border-green-400 rounded-b bg-green-100 px-4 py-3 mb-3 text-green-700">
-            <p>{{ session('success') }}</p>
+@section('title', 'مدیریت تخفیف‌ها')
+
+@section('content')
+    <div class="container mx-auto px-4 py-6">
+        @if(session('success'))
+            <div class="bg-green-100 border-r-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+                <p>{{ session('success') }}</p>
+            </div>
+        @endif
+        <div class="flex justify-between items-center pb-4">
+            <h1 class="text-3xl font-bold text-gray-800">مدیریت تخفیف‌ها</h1>
+            <div>
+                <form action="{{ route('admin.discounts.index') }}" method="GET" class="inline">
+                    <input type="text" name="search" placeholder="جستجو..." class="px-4 py-2 border rounded-l-lg focus:outline-none focus:shadow-outline text-gray-600" value="{{ request('search') }}">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg">
+                        جستجو
+                    </button>
+                </form>
+                <a href="{{ route('admin.discounts.create') }}" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                    ایجاد تخفیف جدید
+                </a>
+            </div>
         </div>
-    @endif
-    <a href="{{ route('admin.discounts.create') }}" class="mb-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        ایجاد تخفیف جدید
-    </a>
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <ul class="list-disc space-y-3 pl-5">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100">
+            <tr>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    نام تخفیف
+                </th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    درصد تخفیف
+                </th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    عملیات
+                </th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
             @foreach ($discounts as $discount)
-                <li class="flex justify-between items-center bg-gray-50 p-3 rounded-md">
-                    <span class="font-medium">{{ $discount->name }} - {{ $discount->percentage }}%</span>
-                    <div class="flex items-center space-x-3">
-                        <a href="{{ route('admin.discounts.edit', $discount) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $discount->name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $discount->percentage }}%</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <a href="{{ route('admin.discounts.edit', $discount) }}" class="text-green-600 hover:text-green-900 bg-green-100 hover:bg-green-200 rounded-full px-3 py-1 font-bold transition duration-300 ease-in-out">
                             ویرایش
                         </a>
-                        <form action="{{ route('admin.discounts.destroy', $discount) }}" method="POST" onsubmit="return confirm('آیا از حذف این مورد اطمینان دارید؟');">
+                        <form action="{{ route('admin.discounts.destroy', $discount) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
+                            <button type="submit" class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 rounded-full px-3 py-1 font-bold transition duration-300 ease-in-out" onclick="return confirm('آیا اطمینان دارید؟')">
                                 حذف
                             </button>
                         </form>
-                    </div>
-                </li>
+                    </td>
+                </tr>
             @endforeach
-        </ul>
-        <div class="mt-4">
-            {{ $discounts->links() }}
+            </tbody>
+        </table>
+        <div class="py-4">
+            {{ $discounts->appends(['search' => request('search')])->links() }}
         </div>
     </div>
-</div>
-</body>
-</html>
+@endsection
