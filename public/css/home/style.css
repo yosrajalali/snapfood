@@ -403,8 +403,7 @@
 }
  .main_bt_border:hover, .main_bt_border:focus {
      background: #e3d105;
-     border-color: #e3d105;
-     color: #222;
+
 }
  .theme_color {
      color: #f8c90d !important;

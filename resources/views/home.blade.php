@@ -27,6 +27,13 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 
+    <!-- Leaflet CSS for the map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        #map { width: 100%; height: 400px; }
+    </style>
 </head>
 <!-- body -->
 
@@ -35,7 +42,6 @@
 <div class="loader_bg">
     <div class="loader"><img src="{{asset('images/loading.gif')}}" alt="" /></div>
 </div>
-
 
 <div class="wrapper">
     <!-- end loader -->
@@ -101,7 +107,6 @@
 
         <!-- start slider section -->
         <div class="slider_section">
-
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -114,7 +119,7 @@
                                                 <div class="slider_cont">
                                                     <h3> رستورانهای نزدیکتان را<br>پیدا کنید</h3>
                                                     <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
-                                                    <a class="main_bt_border" href="#">آدرس انتخابی</a>
+                                                    <button type="button" class="main_bt_border bg-success" data-toggle="modal" data-target="#locationModal">آدرس انتخابی</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-7">
@@ -133,6 +138,40 @@
             </div>
         </div>
         <!-- end slider section -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="locationModalLabel">انتخاب آدرس</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Include your existing map and form code here -->
+                        <div class="container mx-auto px-4 py-6">
+                            <h1 class="text-4xl font-bold text-center text-gray-800 mb-1">جستجوی رستوران‌های نزدیک</h1>
+                            <div class="mb-1">
+                                <label for="city" class="block text-gray-700">شهر خود را انتخاب کنید:</label>
+                                <select id="city" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
+                                    <option value="" disabled selected>انتخاب شهر</option>
+
+                                </select>
+                            </div>
+                            <div id="map"></div>
+                            <form id="locationForm" method="POST" action="{{ route('search-restaurants') }}">
+                                @csrf
+                                <input type="hidden" name="latitude" id="latitude">
+                                <input type="hidden" name="longitude" id="longitude">
+                                <button type="submit" class="bg-success dark:hover:bg-gray-200 text-white font-bold py-2 px-4 rounded mt-4">جستجوی رستوران‌های نزدیک</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- section -->
         <section class="resip_section">
@@ -154,7 +193,6 @@
                                             </div>
                                             <div class="product_blog_cont">
                                                 <h3>{{$category->category_name}}</h3>
-{{--                                                <h4><span class="theme_color">{{$category->id}}</span></h4>--}}
                                             </div>
                                         </div>
                                     @endforeach
@@ -168,7 +206,7 @@
         </section>
 
         <!-- footer -->
-        <fooetr>
+        <footer>
             <div class="footer">
                 <div class="container-fluid">
                     <div class="row">
@@ -236,7 +274,7 @@
                     </div>
                 </div>
             </div>
-        </fooetr>
+        </footer>
         <!-- end footer -->
 
     </div>
@@ -282,7 +320,6 @@
     }
 </style>
 
-
 <script>
     $(document).ready(function() {
         var owl = $('.owl-carousel');
@@ -305,8 +342,90 @@
     })
 </script>
 
+<!-- Scripts for the modal map -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    var map;
+    $('#locationModal').on('shown.bs.modal', function () {
+        if (!map) {
+            map = L.map('map').setView([35.6892, 51.3890], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var marker = L.marker([35.6892, 51.3890], { draggable: true }).addTo(map);
+            var updating = false;
+
+            function updateMarker(lat, lon, updateMap = true) {
+                if (updating) return;
+                updating = true;
+                marker.setLatLng([lat, lon]);
+                if (updateMap) {
+                    map.setView([lat, lon], 12);
+                }
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lon;
+                setTimeout(() => updating = false, 200); // To prevent infinite loop
+            }
+
+            $('#city').on('change', function () {
+                var selectedOption = $(this).find('option:selected');
+                var lat = parseFloat(selectedOption.data('lat'));
+                var lon = parseFloat(selectedOption.data('lon'));
+                console.log('Selected city:', selectedOption.text());
+                console.log('Coordinates:', lat, lon);
+                if (!isNaN(lat) && !isNaN(lon)) {
+                    updateMarker(lat, lon);
+                } else {
+                    console.error('Invalid coordinates for the selected city.');
+                    alert('مختصات معتبر برای شهر انتخاب شده وجود ندارد.');
+                }
+                $(this).select2('close');
+            });
+
+            map.on('moveend', function () {
+                if (updating) return;
+                var center = map.getCenter();
+                updateMarker(center.lat, center.lng, false);
+            });
+
+            marker.on('dragend', function () {
+                var latLng = marker.getLatLng();
+                updateMarker(latLng.lat, latLng.lng, false);
+            });
+
+            async function fetchCities() {
+                try {
+                    const response = await fetch('https://iran-locations-api.ir/api/v1/fa/cities');
+                    const data = await response.json();
+                    console.log('Fetched cities:', data);
+                    const citySelect = $('#city');
+                    data.forEach(city => {
+                        if (city.latitude && city.longitude) {
+                            const option = $('<option></option>')
+                                .val(city.name)
+                                .data('lat', city.latitude)
+                                .data('lon', city.longitude)
+                                .text(city.name);
+                            citySelect.append(option);
+                        } else {
+                            console.error('Invalid coordinates for city:', city.name);
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error fetching cities:', error);
+                }
+            }
+            fetchCities();
+        } else {
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 10);
+        }
+    });
+</script>
+
 </body>
 
 </html>
-
-
