@@ -38,38 +38,49 @@
         $('#city').select2();
 
         var map = L.map('map').setView([35.6892, 51.3890], 12);
+        var marker = L.marker([35.6892, 51.3890], { draggable: true }).addTo(map);
+        var updating = false;
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        var marker = L.marker([35.6892, 51.3890], {
-            draggable: true
-        }).addTo(map);
-
-        function updateMarker(lat, lon) {
+        function updateMarker(lat, lon, updateMap = true) {
+            if (updating) return;
+            updating = true;
             marker.setLatLng([lat, lon]);
-            map.setView([lat, lon], 12);
+            if (updateMap) {
+                map.setView([lat, lon], 12);
+            }
             document.getElementById('latitude').value = lat;
             document.getElementById('longitude').value = lon;
+            setTimeout(() => updating = false, 200); // To prevent infinite loop
         }
 
-        document.getElementById('city').addEventListener('change', function (e) {
-            var selectedOption = e.target.options[e.target.selectedIndex];
-            var lat = selectedOption.getAttribute('data-lat');
-            var lon = selectedOption.getAttribute('data-lon');
-            updateMarker(lat, lon);
+        $('#city').on('change', function () {
+            var selectedOption = $(this).find('option:selected');
+            var lat = parseFloat(selectedOption.data('lat'));
+            var lon = parseFloat(selectedOption.data('lon'));
+            console.log('Selected city:', selectedOption.text());
+            console.log('Coordinates:', lat, lon);
+            if (!isNaN(lat) && !isNaN(lon)) {
+                updateMarker(lat, lon);
+            } else {
+                console.error('Invalid coordinates for the selected city.');
+                alert('مختصات معتبر برای شهر انتخاب شده وجود ندارد.');
+            }
+            $(this).select2('close');
         });
 
         map.on('moveend', function () {
+            if (updating) return;
             var center = map.getCenter();
-            updateMarker(center.lat, center.lng);
+            updateMarker(center.lat, center.lng, false);
         });
 
-        marker.on('dragend', function (e) {
+        marker.on('dragend', function () {
             var latLng = marker.getLatLng();
-            document.getElementById('latitude').value = latLng.lat;
-            document.getElementById('longitude').value = latLng.lng;
+            updateMarker(latLng.lat, latLng.lng, false);
         });
 
         fetchCities();
@@ -78,14 +89,19 @@
             try {
                 const response = await fetch('https://iran-locations-api.ir/api/v1/fa/cities');
                 const data = await response.json();
-                const citySelect = document.getElementById('city');
+                console.log('Fetched cities:', data);
+                const citySelect = $('#city');
                 data.forEach(city => {
-                    const option = document.createElement('option');
-                    option.value = city.name;
-                    option.setAttribute('data-lat', city.latitude);
-                    option.setAttribute('data-lon', city.longitude);
-                    option.textContent = city.name;
-                    citySelect.appendChild(option);
+                    if (city.latitude && city.longitude) {
+                        const option = $('<option></option>')
+                            .val(city.name)
+                            .data('lat', city.latitude)
+                            .data('lon', city.longitude)
+                            .text(city.name);
+                        citySelect.append(option);
+                    } else {
+                        console.error('Invalid coordinates for city:', city.name);
+                    }
                 });
             } catch (error) {
                 console.error('Error fetching cities:', error);

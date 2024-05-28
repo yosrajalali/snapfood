@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
 use GuzzleHttp\Client;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class RestaurantSearchController extends Controller
 {
 
-    public function index()
+    public function index(): View
     {
         return view('restaurants_search.index');
     }
 
-    private function getCoordinates($address)
+    private function getCoordinates($address): ?array
     {
         $client = new Client();
         $response = $client->get('https://nominatim.openstreetmap.org/search', [
@@ -37,7 +39,7 @@ class RestaurantSearchController extends Controller
         return null;
     }
 
-    public function search(Request $request)
+    public function search(Request $request): View|RedirectResponse
     {
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
@@ -79,7 +81,7 @@ class RestaurantSearchController extends Controller
         return view('restaurants_search.results', compact('nearbyRestaurants', 'message'));
     }
 
-    private function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
+    private function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371): float|int
     {
         $latFrom = deg2rad($latitudeFrom);
         $lonFrom = deg2rad($longitudeFrom);
