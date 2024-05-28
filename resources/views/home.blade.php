@@ -150,7 +150,6 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- Include your existing map and form code here -->
                         <div class="container mx-auto px-4 py-6">
                             <h1 class="text-4xl font-bold text-center text-gray-800 mb-1">جستجوی رستوران‌های نزدیک</h1>
                             <div class="mb-1">
