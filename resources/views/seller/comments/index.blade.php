@@ -30,6 +30,7 @@
                 <textarea name="response" rows="2" class="w-full mt-2 p-2 border rounded focus:ring focus:ring-blue-200 focus:border-blue-500">{{ old('response') }}</textarea>
                 <input type="hidden" name="confirm" value="1">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 transition duration-300 ease-in-out">ارسال پاسخ دوباره</button>
+                <a href="{{ route('seller.comments.index') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">لغو</a>
             </form>
         </div>
     @endif

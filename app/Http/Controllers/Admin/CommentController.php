@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\CommentStatusMail;
 use App\Models\Comment;
+use App\Models\Order;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class CommentController extends Controller
         $comments = Comment::where('status', 'request_deletion')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+
 
         return view('admin.comments.index', compact('comments'));
     }
@@ -48,6 +50,7 @@ class CommentController extends Controller
     public function edit($id)
     {
         $comment = Comment::findOrFail($id);
+
         return view('admin.comments.edit', compact('comment'));
     }
 

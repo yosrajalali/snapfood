@@ -23,7 +23,7 @@ class CommentDeleteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'deletion_explanation' => ['required','string','max:255'],
+            'deletion_explanation' => ['string','max:255'],
         ];
     }
 }

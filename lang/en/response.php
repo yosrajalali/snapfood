@@ -35,5 +35,6 @@ return [
     'admin_approve_comment'=>'پیام با موفقیت تایید شد.',
     'admin_delete_comment'=>'پیام با موفقیت حذف شد.',
     'admin_update_comment'=>'پیام با موفقیت بروزرسانی شد.',
+    'restaurant.closed'=>'در حال حاضر رستوران بسته است',
 ];
 

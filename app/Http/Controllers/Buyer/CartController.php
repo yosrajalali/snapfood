@@ -36,10 +36,16 @@ class CartController extends Controller
     public function addToCart(AddToCartRequest $request): JsonResponse
     {
         $buyer = Auth::user();
-
         $food = Food::findOrFail($request->food_id);
-        $restaurantId = $food->restaurant_id;
 
+        $restaurant = $food->restaurant;
+        if (!$restaurant->is_open) {
+            return response()->json([
+                'msg' => __('response.restaurant.closed')
+            ], 403);
+        }
+
+        $restaurantId = $food->restaurant_id;
         $cart = Cart::where('buyer_id', $buyer->id)
             ->where('restaurant_id', $restaurantId)
             ->where('status', 'unpaid')
@@ -81,6 +87,12 @@ class CartController extends Controller
 
         if ($cart->status === 'paid') {
             return response()->json(['msg' => __('response.cart.paid_error')]);
+        }
+
+        $restaurant = $cart->restaurant;
+
+        if (!$restaurant->is_open) {
+            return response()->json(['msg' => __('response.restaurant.closed')], 403);
         }
 
         $food = $cart->foods()->where('food_id', $request->food_id)->first();
@@ -129,6 +141,12 @@ class CartController extends Controller
             return response()->json(['message' => __('response.cart.paid_error')], 422);
         }
 
+        $restaurant = $cart->restaurant;
+
+        if (!$restaurant->is_open) {
+            return response()->json(['msg' => __('response.restaurant.closed')], 403);
+        }
+
         DB::beginTransaction();
         try {
             $total = 0;
@@ -167,7 +185,5 @@ class CartController extends Controller
             return new JsonResponse(['message' => 'Payment failed: ' . $e->getMessage()], 400);
         }
     }
-
-
 }
 
