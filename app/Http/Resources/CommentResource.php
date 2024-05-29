@@ -18,15 +18,17 @@ class CommentResource extends JsonResource
 //            'id' => $this->id,
 //            'cart_id' => $this->cart_id,
 //            'buyer_id' => $this->buyer_id,
-            'name' => $this->buyer->name,
+            'author' => [
+                'name' => $this->buyer->name,
+            ],
+            'foods' => $this->cart->foods->pluck('name')->toArray(),
             'comment' => $this->comment,
             'answer'=> $this->response,
             'score' => $this->score,
-//            'status' => $this->status,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
-            'foods' => $this->cart->foods->pluck('name')->toArray(),
-//            'cart' => new CartResource($this->whenLoaded('cart')),
         ];
     }
+
+
 }

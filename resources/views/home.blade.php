@@ -66,7 +66,7 @@
                                                 @csrf
                                                 <button class="btn btn-outline-success custom-button" type="submit">خروج</button>
                                             </form>
-                                            <a class="btn btn-outline-success" href="{{route('admin.dashboard')}}">پنل ادمین</a>
+                                            <a class="btn btn-outline-success" href="{{route('admin.foodCategories.index')}}">پنل ادمین</a>
                                         </li>
                                     @endauth
 

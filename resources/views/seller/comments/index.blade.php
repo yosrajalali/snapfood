@@ -138,6 +138,7 @@
                             @endif
                             <form action="{{ route('seller.comments.deleteRequest', $comment->id) }}" method="POST" class="mt-2">
                                 @csrf
+                                <textarea name="deletion_explanation" rows="2" class="w-full mt-2 p-2 border rounded focus:ring focus:ring-red-200 focus:border-red-500" placeholder="توضیحات حذف">{{ old('deletion_explanation') }}</textarea>
                                 <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
                                     درخواست حذف
                                 </button>

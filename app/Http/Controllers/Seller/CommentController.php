@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CommentDeleteRequest;
 use App\Http\Requests\CommentResponseRequest;
 use App\Models\Comment;
 use App\Models\Restaurant;
@@ -51,10 +52,11 @@ class CommentController extends Controller
         return redirect()->back()->with('success', __('response.comment.approved'));
     }
 
-    public function deleteRequest($id): RedirectResponse
+    public function deleteRequest(CommentDeleteRequest $request,$id): RedirectResponse
     {
         $comment = Comment::findOrFail($id);
         $comment->status = 'request_deletion';
+        $comment->deletion_explanation = $request->input('deletion_explanation');
         $comment->save();
 
         return redirect()->back()->with('success', __('response.comment.delete_request'));
@@ -77,6 +79,4 @@ class CommentController extends Controller
 
         return redirect()->back()->with('success', __('response.response_send'));
     }
-
-
 }

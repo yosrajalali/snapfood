@@ -17,7 +17,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('discounts', DiscountController::class);
 
-        Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+//        Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
         Route::prefix('comments')->controller(CommentController::class)->name('comments.')->group(function (){
             Route::get('/', 'index')->name('index');

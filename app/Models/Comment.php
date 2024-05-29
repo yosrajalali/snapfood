@@ -17,7 +17,8 @@ class Comment extends Model
         'comment',
         'score',
         'status',
-        'response'
+        'response',
+        'deletion_explanation'
     ];
 
     public function cart()
