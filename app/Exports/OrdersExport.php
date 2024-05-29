@@ -11,10 +11,14 @@ use Carbon\Carbon;
 class OrdersExport implements FromCollection, WithHeadings
 {
     protected $sellerId;
+    protected $startDate;
+    protected $endDate;
 
-    public function __construct(int $sellerId)
+    public function __construct(int $sellerId, Carbon $startDate, Carbon $endDate)
     {
         $this->sellerId = $sellerId;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     /**
@@ -24,17 +28,20 @@ class OrdersExport implements FromCollection, WithHeadings
     {
         return Order::whereHas('restaurant', function ($query) {
             $query->where('seller_id', $this->sellerId);
-        })->get()->map(function($order) {
-            return [
-                'id' => $order->id,
-                'restaurant_id' => $order->restaurant_id,
-                'cart_id' => $order->cart_id,
-                'status_id' => $order->status_id,
-                'total_price' => $order->total_price,
-                'created_at' => Carbon::parse($order->created_at)->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::parse($order->updated_at)->format('Y-m-d H:i:s'),
-            ];
-        });
+        })
+            ->whereBetween('created_at', [$this->startDate, $this->endDate])
+            ->get()
+            ->map(function($order) {
+                return [
+                    'id' => $order->id,
+                    'restaurant_id' => $order->restaurant_id,
+                    'cart_id' => $order->cart_id,
+                    'status_id' => $order->status_id,
+                    'total_price' => $order->total_price,
+                    'created_at' => Carbon::parse($order->created_at)->format('Y-m-d H:i:s'),
+                    'updated_at' => Carbon::parse($order->updated_at)->format('Y-m-d H:i:s'),
+                ];
+            });
     }
 
     /**

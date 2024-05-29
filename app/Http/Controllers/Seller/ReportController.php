@@ -60,8 +60,24 @@ class ReportController extends Controller
             return redirect()->back()->with('error', 'Restaurant not found for the current seller.');
         }
 
-        return Excel::download(new OrdersExport($seller->id), 'orders.xlsx');
+        $startDate = Carbon::now()->subWeek();
+        $endDate = Carbon::now();
+
+        if ($request->has('time_period')) {
+            switch ($request->input('time_period')) {
+                case 'last_month':
+                    $startDate = Carbon::now()->subMonth();
+                    break;
+                case 'last_week':
+                default:
+                    $startDate = Carbon::now()->subWeek();
+                    break;
+            }
+        }
+
+        return Excel::download(new OrdersExport($seller->id, $startDate, $endDate), 'orders.xlsx');
     }
+
 
 }
 

@@ -72,7 +72,7 @@
     </div>
 
     <div class="mt-5">
-        <a href="{{ route('seller.reports.export') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">خروجی اکسل</a>
+        <a href="{{ route('seller.reports.export',  ['time_period' => request('time_period')]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">خروجی اکسل</a>
     </div>
 </div>
 </body>
