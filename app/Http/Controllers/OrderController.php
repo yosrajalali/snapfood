@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\OrderStatusChangedMail;
 use App\Models\Order;
 use App\Models\OrderStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -40,6 +41,25 @@ class OrderController extends Controller
             ->latest()
             ->paginate(7);
         return view('seller.order.archived-orders', compact('archivedOrders'));
+    }
+
+    public function recentOrders()
+    {
+        $xDaysAgo = Carbon::now()->subDays(10);
+        $deliveredStatusId = OrderStatus::where('name', 'تحویل گرفته شد')->first()->id;
+
+        $seller = Auth::user();
+        $restaurantId = $seller->restaurant->id;
+
+        $recentOrders = Order::where('created_at', '>=', $xDaysAgo)
+            ->where('restaurant_id', $restaurantId)
+            ->where('status_id', '!=', $deliveredStatusId)
+            ->latest()
+            ->with(['cart.foods'])
+            ->paginate(7);
+        $statuses = OrderStatus::all();
+
+        return view('seller.order.recentOrders', compact('recentOrders','statuses'));
     }
 
 

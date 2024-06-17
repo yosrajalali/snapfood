@@ -78,7 +78,6 @@ class ReportController extends Controller
         return Excel::download(new OrdersExport($seller->id, $startDate, $endDate), 'orders.xlsx');
     }
 
-
 }
 
 

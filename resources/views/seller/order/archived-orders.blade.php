@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mx-auto px-4 py-6">
-        <h1 class="text-4xl font-bold text-center text-gray-800">آرشیو سفارشات</h1>
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-5">آرشیو سفارشات</h1>
 
         <!-- Current Orders Section -->
         <div class="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">

@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class RestaurantSearchController extends Controller
 {
-
     public function index(): View
     {
         return view('restaurants_search.index');

@@ -77,7 +77,7 @@
                                                 @csrf
                                                 <button class="btn btn-outline-success custom-button" type="submit">خروج</button>
                                             </form>
-                                            <a class="btn btn-outline-success" href="{{route('seller.index')}}">داشبورد فروشنده</a>
+                                            <a class="btn btn-outline-success" href="{{route('seller.recentOrders')}}">داشبورد فروشنده</a>
                                         </li>
                                     @endauth
 
@@ -171,110 +171,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- section -->
-        <section class="resip_section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="ourheading">
-                            <h2>دسته بندی ها</h2>
-                        </div>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="owl-carousel owl-theme">
-                                    @foreach($categories as $category)
-                                        <div class="item">
-                                            <div class="product_blog_img d-flex justify-content-center align-items-center bg-light-gray">
-                                                <img src="images/rs1.png" alt="#" class="img-fluid" />
-                                            </div>
-                                            <div class="product_blog_cont">
-                                                <h3>{{$category->category_name}}</h3>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- footer -->
-        <footer>
-            <div class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class=" col-md-12">
-                            <h2>Request  A<strong class="white"> Call  Back</strong></h2>
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-
-                            <form class="main_form">
-                                <div class="row">
-
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <input class="form-control" placeholder="Name" type="text" name="Name">
-                                    </div>
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <input class="form-control" placeholder="Email" type="text" name="Email">
-                                    </div>
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <input class="form-control" placeholder="Phone" type="text" name="Phone">
-                                    </div>
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <textarea class="textarea" placeholder="Message" type="text" name="Message"></textarea>
-                                    </div>
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <button class="send">Send</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                            <div class="img-box">
-                                <figure><img src="images/img.jpg" alt="img" /></figure>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="footer_logo">
-                                <a href="index.html"><img src="images/logo1.jpg" alt="logo" /></a>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <ul class="lik">
-                                <li class="active"> <a href="index.html">Home</a></li>
-                                <li> <a href="about.html">About</a></li>
-                                <li> <a href="recipe.html">Recipe</a></li>
-                                <li> <a href="blog.html">Blog</a></li>
-                                <li> <a href="contact.html">Contact us</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="new">
-                                <h3>Newsletter</h3>
-                                <form class="newtetter">
-                                    <input class="tetter" placeholder="Your email" type="text" name="Your email">
-                                    <button class="submit">Subscribe</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="copyright">
-                    <div class="container">
-                        <p>© 2019 All Rights Reserved. Design by<a href="https://html.design/"> Free Html Templates</a></p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- end footer -->
 
     </div>
 </div>

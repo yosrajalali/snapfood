@@ -14,12 +14,21 @@ class EnsureRestaurantIsComplete
      *
      * @param  \Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+
+    public function handle(Request $request, Closure $next, $checkType = null)
     {
         $seller = Auth::user();
-        if (!$seller->restaurant || !$seller->restaurant->is_complete) {
-            return redirect()->route('seller.restaurants.create')->with('error', 'لطفا ابتدا اطلاعات رستوران خود را تکمیل کنید.');
+
+        if ($checkType === 'create') {
+            if ($seller->restaurant && $seller->restaurant->is_complete) {
+                return redirect()->route('seller.recentOrders')->with('error', 'شما قبلاً یک رستوران ثبت کرده‌اید.');
+            }
+        } else {
+            if (!$seller->restaurant || !$seller->restaurant->is_complete) {
+                return redirect()->route('seller.restaurants.create')->with('error', 'لطفا ابتدا اطلاعات رستوران خود را تکمیل کنید.');
+            }
         }
+
         return $next($request);
     }
 }

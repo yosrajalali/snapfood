@@ -26,7 +26,7 @@ class OrdersChart extends Chart
         $labels = [];
         $data = [];
 
-        $currentDate = $startDate->copy();
+        $currentDate = $startDate->copy()->addDay();
         while ($currentDate->lte($endDate)) {
             $labels[] = $currentDate->format('Y-m-d');
             $data[] = Order::whereIn('restaurant_id', $restaurantIds)

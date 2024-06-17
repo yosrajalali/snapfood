@@ -13,32 +13,32 @@ use Illuminate\View\View;
 
 class SellerController extends Controller
 {
-    public function index(): View
-    {
+//    public function index(): View
+//    {
+//
+//        $seller = Auth::user();
+//        $restaurant = $seller->restaurant;
+//        $isRestaurantInfoComplete = $restaurant ? $restaurant->is_complete : false;
+//
+//        return view('seller.index', compact('isRestaurantInfoComplete'));
+//    }
 
-        $seller = Auth::user();
-        $restaurant = $seller->restaurant;
-        $isRestaurantInfoComplete = $restaurant ? $restaurant->is_complete : false;
-
-        return view('seller.index', compact('isRestaurantInfoComplete'));
-    }
-
-    public function dashboard()
-    {
-        $xDaysAgo = Carbon::now()->subDays(10);
-        $deliveredStatusId = OrderStatus::where('name', 'تحویل گرفته شد')->first()->id;
-
-        $seller = Auth::user();
-        $restaurantId = $seller->restaurant->id;
-
-        $recentOrders = Order::where('created_at', '>=', $xDaysAgo)
-            ->where('restaurant_id', $restaurantId)
-            ->where('status_id', '!=', $deliveredStatusId)
-            ->latest()
-            ->with(['cart.foods'])
-            ->paginate(7);
-        $statuses = OrderStatus::all();
-
-        return view('seller.dashboard', compact('recentOrders','statuses'));
-    }
+//    public function dashboard()
+//    {
+//        $xDaysAgo = Carbon::now()->subDays(10);
+//        $deliveredStatusId = OrderStatus::where('name', 'تحویل گرفته شد')->first()->id;
+//
+//        $seller = Auth::user();
+//        $restaurantId = $seller->restaurant->id;
+//
+//        $recentOrders = Order::where('created_at', '>=', $xDaysAgo)
+//            ->where('restaurant_id', $restaurantId)
+//            ->where('status_id', '!=', $deliveredStatusId)
+//            ->latest()
+//            ->with(['cart.foods'])
+//            ->paginate(7);
+//        $statuses = OrderStatus::all();
+//
+//        return view('seller.order.recentOrders', compact('recentOrders','statuses'));
+//    }
 }

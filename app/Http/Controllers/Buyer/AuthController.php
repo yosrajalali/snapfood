@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    // User registration
     public function register(RegisterBuyerRequest $request): JsonResponse
     {
         $validated = $request->validated();

@@ -26,7 +26,7 @@
                     <textarea name="response" rows="2" class="w-full mt-2 p-2 border rounded focus:ring focus:ring-blue-200 focus:border-blue-500">{{ old('response') }}</textarea>
                     <input type="hidden" name="confirm" value="1">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 transition duration-300 ease-in-out">ارسال پاسخ دوباره</button>
-                    <a href="{{ route('seller.comments.index') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">لغو</a>
+                    <a href="{{ route('seller.comments.index') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out mt-2">لغو</a>
                 </form>
             </div>
         @endif
@@ -64,13 +64,13 @@
                         <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
                             تعداد
                         </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
                             مجموع هزینه
                         </th>
                         <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
                             نظر
                         </th>
-                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
                             وضعیت
                         </th>
                         <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">
@@ -114,25 +114,28 @@
                             </td>
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                                 @if($comment->status === 'pending' || $comment->status === 'request_deletion')
-                                    <form action="{{ route('seller.comments.approve', $comment->id) }}" method="POST">
+                                    <form action="{{ route('seller.comments.approve', $comment->id) }}" method="POST" class="flex items-center mb-2">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full">
                                             تایید
                                         </button>
                                     </form>
                                 @endif
-                                <form action="{{ route('seller.comments.deleteRequest', $comment->id) }}" method="POST" class="mt-2">
+                                <form action="{{ route('seller.comments.deleteRequest', $comment->id) }}" method="POST" class="flex items-center flex-col mb-2">
                                     @csrf
-                                    <textarea name="deletion_explanation" rows="2" class="w-full mt-2 p-2 border rounded focus:ring focus:ring-red-200 focus:border-red-500" placeholder="توضیحات حذف">{{ old('deletion_explanation') }}</textarea>
-                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                                    <textarea name="deletion_explanation" rows="1" class="w-full p-2 border rounded focus:ring focus:ring-red-200 focus:border-red-500 mb-2" placeholder="توضیحات حذف">{{ old('deletion_explanation') }}</textarea>
+                                    @error('deletion_explanation')
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full">
                                         درخواست حذف
                                     </button>
                                 </form>
-                                <form action="{{ route('seller.comments.response', $comment->id) }}" method="POST" class="mt-2">
+                                <form action="{{ route('seller.comments.response', $comment->id) }}" method="POST" class="flex items-center flex-col">
                                     @csrf
-                                    <textarea name="response" rows="2" class="w-full mt-2 p-2 border rounded focus:ring focus:ring-blue-200 focus:border-blue-500">{{ old('response') }}</textarea>
-                                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out mt-2">
+                                    <textarea name="response" rows="1" class="w-full p-2 border rounded focus:ring focus:ring-blue-200 focus:border-blue-500 mb-2" placeholder="پاسخ">{{ old('response') }}</textarea>
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full">
                                         ارسال پاسخ
                                     </button>
                                 </form>

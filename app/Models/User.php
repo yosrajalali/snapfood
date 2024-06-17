@@ -48,7 +48,7 @@ class User extends Authenticatable
     {
         $user = self::where('email', $email)->where('role', 'buyer')->first();
         if ($user) {
-            Auth::login($user);  // Maintain a session for the buyer
+            Auth::login($user);
             $token = $user->createToken('BuyerToken')->plainTextToken;
             return $token;
         }

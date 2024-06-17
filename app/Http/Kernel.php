@@ -35,9 +35,6 @@ class Kernel extends HttpKernel
      */
 
     protected $routeMiddleware = [
-//        'admin' => Admin::class,
-//        'seller' => Seller::class,
-//        'buyer' => Buyer::class,
         'restaurant.complete' => EnsureRestaurantIsComplete::class,
         'force.json' => ForceJson::class,
     ];
