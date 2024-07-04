@@ -21,7 +21,7 @@ class EnsureRestaurantIsComplete
 
         if ($checkType === 'create') {
             if ($seller->restaurant && $seller->restaurant->is_complete) {
-                return redirect()->route('seller.recentOrders')->with('error', 'شما قبلاً یک رستوران ثبت کرده‌اید.');
+                return redirect()->route('seller.recentOrders')->with('error', 'رستوران شما با موفقیت ثبت شده است.توجه داشته باشید که هر فروشنده فقط میتواند یک رستوران ثبت کند.');
             }
         } else {
             if (!$seller->restaurant || !$seller->restaurant->is_complete) {

@@ -38,7 +38,7 @@ class RestaurantController extends Controller
             'is_complete' =>true,
         ]);
 
-        return redirect()->route('seller.restaurant.create')->with('success', __('response.restaurant.create'));
+        return redirect()->route('seller.restaurants.create')->with('success', __('response.restaurant.create'));
     }
 
     public function edit()
