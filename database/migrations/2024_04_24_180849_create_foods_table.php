@@ -17,10 +17,8 @@ return new class extends Migration
             $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
             $table->string('name');
             $table->text('ingredients')->nullable();
-            $table->decimal('price', 8, 2);
+            $table->decimal('price', 15, 2);
             $table->string('image')->nullable();
-//            $table->foreignId('category_id')->constrained('food_categories');
-//            $table->decimal('discount', 5, 2)->default(0)->nullable();
             $table->boolean('food_party')->default(false);
             $table->timestamps();
         });

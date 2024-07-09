@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 
 <head>
     <!-- basic -->
@@ -98,7 +98,7 @@
                 </div>
             </div>
             @if(session('success'))
-                <div class="alert alert-success text-center" style="position: absolute; top: 70%; left: 50%; transform: translate(-50%, -50%);" role="alert">
+                <div class="alert alert-success text-center" style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);" role="alert">
                     {{ session('success') }}
                 </div>
             @endif
@@ -119,7 +119,7 @@
                                                 <div class="slider_cont">
                                                     <h3> رستورانهای نزدیکتان را<br>پیدا کنید</h3>
                                                     <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
-                                                    <button type="button" class="main_bt_border bg-success" data-toggle="modal" data-target="#locationModal">آدرس انتخابی</button>
+                                                    <button type="button" class="main_bt_border bg-success btn-center" data-toggle="modal" data-target="#locationModal">آدرس انتخابی</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-7">

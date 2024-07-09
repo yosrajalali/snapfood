@@ -7,10 +7,16 @@
      .slider_cont h3 {
         font-size: 36px;
          line-height: 45px;
+         text-align: center;
     }
      .slider_cont p {
         margin-top: 10px;
-         margin-bottom: 5px
+         margin-bottom: 5px;
+         text-align: center;
+    }
+    .btn-center {
+        position: absolute;
+        left: 50%;
     }
      .slider_section {
         min-height: auto;
@@ -33,7 +39,7 @@
         display: none !important;
     }
      .slider_section {
-        min-height: auto;
+        /*min-height: auto;*/
     }
      .slider_cont {
         padding-left: 128px;
@@ -42,11 +48,17 @@
      .slider_cont h3 {
         font-size: 36px;
          line-height: 45px;
+         text-align: center;
     }
      .slider_cont p {
         margin-top: 10px;
-         margin-bottom: 5px
+         margin-bottom: 5px;
+         text-align: center;
     }
+     .btn-center {
+         position: absolute;
+         left: 42%;
+     }
      #main_slider .carousel-control-prev, #main_slider .carousel-control-next {
         width: 54px;
          height: 54px;
@@ -81,7 +93,7 @@
         display: none;
     }
      .slider_section {
-        min-height: auto;
+        /*min-height: auto;*/
     }
      .slider_image img {
         height: 250px;
@@ -140,7 +152,7 @@
         display: none;
     }
      .slider_section {
-        min-height: auto;
+        /*min-height: auto;*/
     }
      .slider_image img {
         height: 250px;
@@ -202,6 +214,7 @@
      ul.lik li a {
         padding: 0px 21px;
     }
+
 }
  @media (max-width: 575px) {
      .logo {
@@ -239,7 +252,7 @@
          height: 50px;
     }
      .slider_section {
-        min-height: auto;
+        /*min-height: auto;*/
     }
      .slider_image img {
         height: 250px;
@@ -312,5 +325,9 @@
      .yellow_bg {
         margin-top: 163px;
     }
+
+     .position-mobile {
+         position: absolute;
+         top: 40%;
+     }
 }
- 

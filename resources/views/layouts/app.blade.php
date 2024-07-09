@@ -3,16 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="{{ asset('css/admin/dashboard.css') }}" rel="stylesheet">
+          content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard')</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .custom-purple {
             background-color: rgb(128, 90, 213);
         }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 56px;
+            }
+            .sidebar a {
+                padding-right: 0 !important;
+            }
+            .sidebar .text {
+                display: none;
+            }
+        }
     </style>
+    @yield('head')
 </head>
 <body class="flex h-screen bg-white dark:bg-gray-700 text-black dark:text-white">
 <div x-data="setup()" :class="{ 'dark': isDark }" class="flex flex-row-reverse w-full">
@@ -32,7 +42,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                             </svg>
                         </span>
-                        <span class="mr-2 text-sm tracking-wide truncate">خانه</span>
+                        <span class="mr-2 text-sm tracking-wide truncate text">خانه</span>
                     </a>
                 </li>
                 <li>
@@ -42,7 +52,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 11h18M3 15h18M3 19h18"></path>
                             </svg>
                         </span>
-                        <span class="mr-2 text-sm tracking-wide truncate">دسته بندی غذاها</span>
+                        <span class="mr-2 text-sm tracking-wide truncate text">دسته بندی غذاها</span>
                     </a>
                 </li>
                 <li>
@@ -52,7 +62,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m-4 4h10"></path>
                             </svg>
                         </span>
-                        <span class="mr-2 text-sm tracking-wide truncate">دسته بندی رستورانها</span>
+                        <span class="mr-2 text-sm tracking-wide truncate text">دسته بندی رستورانها</span>
                     </a>
                 </li>
                 <li>
@@ -62,7 +72,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </span>
-                        <span class="mr-2 text-sm tracking-wide truncate">تخفیف ها</span>
+                        <span class="mr-2 text-sm tracking-wide truncate text">تخفیف ها</span>
                     </a>
                 </li>
                 <li>
@@ -72,7 +82,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11h4m4 0h-4m4-4H8m4 8h4m0 4H8m4-8h4"></path>
                             </svg>
                         </span>
-                        <span class="mr-2 text-sm tracking-wide truncate">نظرات</span>
+                        <span class="mr-2 text-sm tracking-wide truncate text">نظرات</span>
                     </a>
                 </li>
             </ul>
